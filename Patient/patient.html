@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-M Dental | Premium Portal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="patient.css">
+</head>
+
+<body>
+
+<!-- Toggle Button -->
+
+<div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        
+
+            <div class="brand">
+            <div class="brand-logo">
+                <i class="bi bi-shield-plus"></i>
+            </div>
+            <span>G-M Dental</span>
+        </div>
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+        </button>
+                <nav class="side-nav">
+            <div class="nav-label">MAIN MENU</div>
+
+            <a href="#" id="link-dash" class="nav-link active" onclick="showSection('dashboard')">
+                <i class="bi bi-grid-1x2"></i> <span>Dashboard</span>
+            </a>
+
+            <a href="#" id="link-book" class="nav-link" onclick="showSection('book-apt')">
+                <i class="bi bi-calendar-plus"></i> <span>Booking</span>
+            </a>
+
+            <a href="#" id="link-appointments" class="nav-link" onclick="showSection('my-appointments')">
+                <i class="bi bi-calendar2-check"></i> <span>Appointments</span>
+            </a>
+
+            <a href="#" id="link-history" class="nav-link" onclick="showSection('history')">
+                <i class="bi bi-clock-history"></i> <span>History</span>
+            </a>
+
+            <a href="#" id="link-services" class="nav-link" onclick="showSection('services')">
+                <i class="bi bi-handbag"></i> <span>Services</span>
+            </a>
+
+            <a href="#" id="link-archive" class="nav-link" onclick="showSection('archive'); loadArchiveUI();">
+                <i class="bi bi-archive"></i> <span>Archive</span>
+            </a>
+
+            <div class="nav-label">ACCOUNT</div>
+
+            <a href="#" id="link-profile" class="nav-link" onclick="showSection('profile')">
+                <i class="bi bi-person-gear"></i> <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <header class="main-header">
+            
+
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search your records...">
+            </div>
+
+            <div class="user-controls">
+                <div class="notif-wrapper">
+                    <i class="bi bi-bell"></i>
+                    <span class="dot"></span>
+                </div>
+
+                <div class="profile-menu-wrapper">
+                    <div class="profile-pill" id="profileMenuTrigger">
+                        <img id="header-profile-img" src="https://ui-avatars.com/api/?name=Patient&background=4e73df&color=fff">
+                        <div class="text">
+                            <span class="name" id="headerPatientName">Patient</span>
+                            <span class="id" id="headerPatientId">ID: #2026-001</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                        <button type="button" class="profile-dropdown-item" id="goToSettingsBtn">
+                            <i class="bi bi-gear"></i>
+                            <span>Settings</span>
+                        </button>
+
+                        <button type="button" class="profile-dropdown-item logout" id="logoutBtn">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Log Out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <div class="scroll-area">
+
+            <!-- Booking -->
+            <section id="book-apt" class="view">
+                <h2 class="section-title">Book Appointment</h2>
+
+                <div class="booking-grid">
+                    <div class="booking-card step1">
+                        <div class="step-badge">1</div>
+                        <div class="service-header">
+                            <div class="service-left">
+                                <div class="icon-box"><i class="bi bi-shield-check"></i></div>
+                                <div class="service-text">
+                                    <p class="small text-muted mb-1">Current Service</p>
+                                    <h5 id="selectedService">Select a Service</h5>
+                                </div>
+                            </div>
+                            <a href="#" onclick="openServicePicker()" class="change-link">Change</a>
+                        </div>
+                        <div class="included-box">
+                            <h6>What's Included:</h6>
+                            <ul id="serviceIncludes">
+                                <li>Select a service to view details</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="booking-card step2">
+                        <div class="step-badge">2</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="mb-2 fw-semibold">Date</label>
+                                <div class="calendar-box">
+                                    <div class="calendar-header">
+                                        <span onclick="changeMonth(-1)" style="cursor:pointer;">&lt;</span>
+                                        <strong id="calendarMonth"></strong>
+                                        <span onclick="changeMonth(1)" style="cursor:pointer;">&gt;</span>
+                                    </div>
+                                    <div class="calendar-grid" id="calendarDays"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="mb-2 fw-semibold">Time</label>
+                                <div class="time-toggle">
+                                    <button class="time-filter active" data-period="morning">morning</button>
+                                    <button class="time-filter" data-period="afternoon">afternoon</button>
+                                </div>
+                                <div class="time-slots" id="timeSlots"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-card step3">
+                        <div class="step-badge">3</div>
+                        <div class="summary-grid">
+                            <div><p>Service</p><strong id="summaryService">-</strong></div>
+                            <div><p>Date</p><strong id="summaryDate">-</strong></div>
+                            <div><p>Time</p><strong id="summaryTime">-</strong></div>
+                            <div><p>Cost</p><strong id="summaryPrice">₱0</strong></div>
+                        </div>
+                        <button class="btn-gradient mt-3 w-100" type="button" onclick="confirmBookingNew()">
+                        Confirm Booking
+                        </button>
+                    </div>
+                </div>
+            </section> 
+            
+            <section id="archive" class="view section-padding">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="fw-bold mb-0">Archived Records 📁</h2>
+                            <p class="text-muted small">Appointments moved here are hidden from your main dashboard.</p>
+                        </div>
+                        <button class="btn btn-outline-danger btn-sm" onclick="clearArchive()">Clear All</button>
+                    </div>
+
+
+                                <div class="record-filters mb-3">
+                        <input type="text" id="archiveSearchInput" class="form-control record-search-input" placeholder="Search service or schedule...">
+                            <div class="custom-dropdown" id="archiveStatusFilter">
+                            <div class="dropdown-selected">All Status</div>
+
+                            <div class="dropdown-options">
+                                <div data-value="">All Status</div>
+                                <div data-value="Pending">Pending</div>
+                                <div data-value="Approved">Approved</div>
+                                <div data-value="Upcoming">Upcoming</div>
+                                <div data-value="Completed">Completed</div>
+                                <div data-value="Cancelled">Cancelled</div>
+                                <div data-value="Rejected">Rejected</div>
+                                <div data-value="Reschedule Requested">Reschedule Requested</div>
+                                <div data-value="Reschedule Rejected">Reschedule Rejected</div>
+                            </div>
+                            </div>
+                    </div>
+
+
+                    <div class="card shadow-sm border-0">
+                        <div class="table-responsive p-3">
+                            <table class="table align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Schedule</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="archiveTableBody">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="billing" class="view">
+            <h2 class="section-title">Billing & Payment</h2>
+
+            <form id="billingForm" class="settings-card p-4">
+
+                <!-- TOTAL -->
+                <div class="mb-4">
+                    <h5>Total Amount</h5>
+                    <h2 id="billTotal" class="fw-bold text-primary">₱0</h2>
+                </div>
+
+                <!-- DOWN PAYMENT -->
+                <div id="downPaymentWrapper" class="mb-4">
+                    <label class="form-label">Payment Amount</label>
+                    <input type="number" id="billDown" class="form-control form-dark" placeholder="Enter amount" required>
+                </div>
+
+                <!-- PAYMENT METHOD -->
+                <div class="mb-4">
+                    <label class="form-label mb-3">Payment Method</label>
+
+                    <div class="payment-options">
+    <div class="payment-card active" data-method="card">
+        <div class="method-icon">💳</div>
+        <strong>Card</strong><br>
+        <small>Visa / Mastercard</small>
+    </div>
+
+    <div class="payment-card" data-method="gcash">
+        <div class="method-icon">
+            <img src="gcash.png" class="payment-logo" alt="GCash">
+        </div>
+        <strong>GCash</strong><br>
+        <small>Mobile Wallet</small>
+    </div>
+
+    <div class="payment-card" data-method="bank">
+        <div class="method-icon">🏦</div>
+        <strong>Bank Transfer</strong><br>
+        <small>BPI / BDO / UnionBank</small>
+    </div>
+
+    <div class="payment-card" data-method="cash">
+        <div class="method-icon">💵</div>
+        <strong>Cash</strong><br>
+        <small>Pay at Clinic</small>
+    </div>
+</div>
+
+                    <input type="hidden" id="paymentMethod" value="card">
+                </div>
+
+                <!-- CARD FORM -->
+                <div id="cardForm" class="payment-form">
+                    <input type="text" class="form-control mb-2" placeholder="Card Number">
+                    <div class="d-flex gap-2">
+                        <input type="text" class="form-control" placeholder="MM/YY">
+                        <input type="text" class="form-control" placeholder="CVV">
+                    </div>
+                </div>
+
+                <!-- GCASH UI -->
+                <div id="gcashForm" class="payment-form d-none text-center">
+                    <p>Scan to pay via GCash</p>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=GCashPayment" />
+                </div>
+
+                <div id="bankForm" class="payment-form d-none">
+                    <input type="text" class="form-control mb-2" placeholder="Account Name">
+                    <input type="text" class="form-control mb-2" placeholder="Account Number">
+                    <input type="text" class="form-control" placeholder="Bank Name">
+                </div>
+
+                <!-- CASH -->
+                <div id="cashForm" class="payment-form d-none">
+                    <p class="text-muted">Pay your down payment at the clinic.</p>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="billing-actions mt-4">
+                    <button type="submit" id="confirmPaymentBtn" class="btn-gradient w-100">
+                        Confirm Payment
+                    </button>
+
+                    <button type="button" class="btn-billing-cancel w-100 mt-2" onclick="cancelBillingPayment()">
+                        Cancel
+                    </button>
+                </div>
+
+            </form>
+            </section>
+
+            
+
+            <!-- Appointments -->
+       <section id="my-appointments" class="view">
+    <h2 class="section-title">My Appointments</h2>
+
+    <div class="d-flex justify-content-end mb-2">
+        <button class="btn-clear-outline" onclick="clearAppointments()">
+            Clear All
+        </button>
+    </div>
+
+    <div class="record-filters mb-3">
+        <input type="text"
+               id="appointmentsSearchInput"
+               class="form-control record-search-input"
+               placeholder="Search service or schedule...">
+
+        <div class="custom-dropdown" id="appointmentsStatusFilter">
+            <div class="dropdown-selected">All Status</div>
+
+            <div class="dropdown-options">
+                <div data-value="">All Status</div>
+                <div data-value="Pending">Pending</div>
+                <div data-value="Approved">Approved</div>
+                <div data-value="Upcoming">Upcoming</div>
+                <div data-value="Reschedule Requested">Reschedule Requested</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings-card">
+        <table class="table text-white">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="myAppointmentsTableBody"></tbody>
+        </table>
+    </div>
+</section>
+
+            <section id="history" class="view">
+    <h2 class="section-title">Appointment History</h2>
+
+      <div class="record-filters mb-3">
+        <input type="text" id="historySearchInput" class="form-control record-search-input" placeholder="Search service or schedule...">
+            <div class="custom-dropdown" id="historyStatusFilter">
+            <div class="dropdown-selected">All Status</div>
+
+            <div class="dropdown-options">
+                <div data-value="">All Status</div>
+                <div data-value="Completed">Completed</div>
+                <div data-value="Cancelled">Cancelled</div>
+                <div data-value="Rejected">Rejected</div>
+                <div data-value="Reschedule Rejected">Reschedule Rejected</div>
+            </div>
+            </div>
+    </div>
+
+    <div class="settings-card">
+        <table class="table text-white">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+        </table>
+    </div>
+</section>
+
+            <!-- Dashboard -->
+            <section id="dashboard" class="view active">
+
+            <!-- HERO -->
+<div class="promo-card position-relative">
+    <div class="hero-date-container" id="heroCalendarTrigger">
+        <div class="date-badge-content">
+            <i class="bi bi-calendar3"></i>
+            <div class="date-text">
+                <span class="date-label">Current Date</span>
+                <span id="currentDateDisplay" class="date-value">March 30, 2026</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="promo-text">
+       <h1 id="heroWelcomeText">Welcome, Patient! 👋</h1>
+        <p id="heroUpcomingText">You have no upcoming appointments.</p>
+        <button id="heroViewDetailsBtn" class="btn-glass" data-bs-toggle="offcanvas" data-bs-target="#appointmentPanel">
+            View Details
+        </button>
+    </div>
+
+    <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="appointmentPanel" style="width: 400px;">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold">Service Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body">
+            <div class="appointment-header mb-4">
+                <span id="appointmentStatusBadge" class="badge bg-primary-subtle text-primary mb-2">No Appointment</span>
+                <h3 id="appointmentServiceTitle">No upcoming appointments</h3>
+                <p id="appointmentScheduleText" class="small">Book an appointment to see details here.</p>
+            </div>
+
+            <div class="p-3 rounded-3 mb-4">
+                <h6 class="small text-uppercase fw-bold mb-3">What's Included</h6>
+                <ul id="appointmentIncludesList" class="list-unstyled mb-0">
+                    <li class="mb-2">No service selected yet.</li>
+                </ul>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button id="addToCalendarBtn" class="btn btn-primary w-100 py-2">Add to Calendar</button>
+                <button id="rescheduleBtn" class="btn btn-outline-secondary py-2" data-bs-toggle="modal" data-bs-target="#rescheduleModal">
+                    Reschedule
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="waves">
+        <svg viewBox="0 0 1440 320" class="wave-main">
+            <path d="M0,260C400,180,700,200,1000,240C1200,260,1350,240,1440,230V320H0Z"></path>
+        </svg>
+        <svg viewBox="0 0 1440 320" class="wave-soft">
+            <path d="M0,240C240,220,480,220,720,240C960,260,1200,260,1440,240V320H0Z"></path>
+        </svg>
+    </div>
+
+    <div class="promo-visual">
+        <img src="newtooth.png" class="promo-tooth">
+    </div>
+</div>
+
+           <!-- STATS + REMINDERS -->
+            <div class="dashboard-grid">
+
+                <!-- LEFT SIDE -->
+                <div class="left">
+
+                    <!-- STATS -->
+                    <div class="stats-grid">
+
+                        <div class="stat-item">
+                            <div class="stat-left">
+                                <div class="stat-icon b-blue">
+                                    <i class="bi bi-check2-circle"></i>
+                                </div>
+                                <div>
+                                    <p>Total Visits</p>
+                                    <h3>12</h3>
+                                </div>
+                            </div>
+                        <button class="btn btn-primary w-100 mt-2" onclick="showSection('book-apt', this)">
+                            Book Appointment
+                        </button>
+                        
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-left">
+                                <div class="stat-icon b-purple">
+                                    <i class="bi bi-calendar3"></i>
+                                </div>
+                                <div>
+                                    <p>Upcoming</p>
+                                    <h3>1</h3>
+                                </div>
+                            </div>
+                        <button class="btn btn-primary w-100 mt-2" onclick="showSection('book-apt', this)">
+                            Book Appointment
+                        </button>
+                        </div>
+
+                    </div>
+
+                    <!-- APPOINTMENTS -->
+                    <div class="settings-card modern-card mt-4">
+                        <div class="card-header">
+                            <h5>My Appointments</h5>
+                            <i class="bi bi-clock-history icon-soft"></i>
+                        </div>
+
+                        <div class="table-modern">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboardTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class="right">
+
+                    <!-- REMINDERS -->
+                    <div class="settings-card reminder-card">
+                        <div class="reminder-header">
+                            <div class="reminder-title">
+                                <div class="reminder-icon">
+                                    <i class="bi bi-bell-fill"></i>
+                                </div>
+                                <h5>Reminders</h5>
+                            </div>
+
+                            <div class="reminder-count">
+                                <i class="bi bi-play-fill"></i>
+                                <span>3</span>
+                            </div>
+                        </div>
+
+                        <ul class="reminder-list">
+                            <li>Dental Cleaning in 3 Months</li>
+                            <li>Remember to Brush 2x Daily</li>
+                            <li>Floss Daily for Healthier Gums</li>
+                        </ul>
+                    </div>
+
+                    <!-- TIPS -->
+                    <div class="settings-card modern-card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold m-0">Oral Health Tips</h5>
+                        <i class="bi bi-lightbulb-fill fs-4"></i>
+                    </div>
+
+                    <div class="tips-banner-bg">
+                        <div class="tips-text-content">
+                            <p>Schedule regular dental checkups every 6 months to keep your teeth and gums healthy.</p>
+                        </div>
+                    </div>
+
+                    <div class="tips-link-container">
+                        <a href="javascript:void(0)" class="more-tips-link" onclick="toggleTipsPanel(true)">
+                            More Tips <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            </section>
+
+            <!-- Services -->
+            <section id="services" class="view">
+                <h2 class="section-title">Professional Services</h2>
+                <div class="services-wrapper" id="serviceGrid"></div>
+            </section>
+
+            <!-- Profile -->
+            <section id="profile" class="view">
+                <div class="container-fluid py-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">Account Settings</h2>
+                       <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="darkModeToggle">
+                                <input type="checkbox" id="darkModeToggle" />
+                                <div class="slider">
+                                    <div class="thumb-icon-container">
+                                        <i class="bi bi-moon-stars-fill moon-icon-thumb"></i>
+                                        <i class="bi bi-sun-fill sun-icon-thumb"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-5">
+                        <div class="position-relative d-inline-block">
+                            <img src="https://ui-avatars.com/api/?name=Juan+Dela+Cruz&background=4e73df&color=fff" id="profileDisplay" class="rounded-circle border border-4 border-white shadow" style="width: 150px; height: 150px; object-fit: cover;">
+                            <label for="photoUpload" class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle p-2 shadow" style="cursor: pointer;">
+                                <i class="bi bi-camera-fill"></i>
+                                <input type="file" id="photoUpload" hidden accept="image/*">
+                            </label>
+                        </div>
+                            <h3 class="mt-3 fw-bold mb-0" id="settingsPatientName">Patient</h3>
+                            <p class="text-muted small" id="settingsPatientId">Patient ID: #2026-001</p>
+                    </div>
+
+                    <div class="row g-4 justify-content-center">
+                            <div class="col-md-5">
+                                <div class="card border-0 shadow-sm p-4 h-100">
+                                    <h5 class="fw-bold mb-4">Profile Details</h5>
+
+                                    <div class="mb-3">
+                                        <input type="text" id="profileFullName" class="form-control bg-transparent" value="" disabled>
+                                        <input type="email" id="profileEmail" class="form-control bg-transparent" value="" disabled>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted">Email</label>
+                                        <input type="email" id="profileEmail" class="form-control bg-transparent" value="juan.dc@email.com" disabled>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted">Phone Number</label>
+                                        <input type="text" id="profilePhone" class="form-control bg-transparent" placeholder="+63 912 345 6789" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-md-5">
+                            <div class="card border-0 shadow-sm p-4 h-100">
+                                <h5 class="fw-bold mb-4">Security</h5>
+
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">New Password</label>
+                                    <input type="password" id="profileNewPassword" class="form-control bg-transparent" placeholder="••••••••" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">Confirm Password</label>
+                                    <input type="password" id="profileConfirmPassword" class="form-control bg-transparent" placeholder="••••••••" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <button id="editProfileBtn" class="btn btn-primary btn-lg px-5 rounded-pill shadow">
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+          
+<div id="serviceModal" class="service-modal">
+    <div class="service-modal-content">
+        <div class="modal-header">
+            <h4>Select Service</h4>
+            <button class="modal-close" onclick="closeServicePicker()">&times;</button>
+        </div>
+        <div class="modal-body" id="serviceList"></div>
+    </div>
+</div>
+
+<div id="notifPanel" class="notif-panel">
+    <div class="notif-header">
+        <h5>Notifications</h5>
+        <button class="notif-close" id="closeNotif" type="button">&times;</button>
+    </div>
+
+    <div class="notif-body">
+        <ul id="notifList" class="notif-list"></ul>
+    </div>
+
+    <div class="notif-footer">
+        <button type="button" class="notif-footer-btn" id="markAllReadBtn">
+            Mark all as read
+        </button>
+        <button type="button" class="btn-glass see-all-btn" id="openAllNotifModal">
+            See all
+        </button>
+    </div>
+</div>
+
+<div id="allNotifModal" class="notif-modal-overlay">
+    <div class="notif-modal-card">
+        <div class="notif-modal-header">
+            <h4>All Notifications</h4>
+            <button type="button" class="notif-close" id="closeAllNotifModal">&times;</button>
+        </div>
+
+        <div class="notif-modal-toolbar">
+            <button type="button" class="notif-toolbar-btn" id="modalMarkAllReadBtn">
+                Mark all as read
+            </button>
+            <button type="button" class="notif-toolbar-btn danger" id="clearAllNotifBtn">
+                Clear all
+            </button>
+        </div>
+
+        <div class="notif-modal-body">
+            <ul id="allNotifList" class="notif-list notif-list-full"></ul>
+        </div>
+    </div>
+</div>
+
+<div id="clearNotifWarningModal" class="notif-warning-overlay">
+    <div class="notif-warning-card">
+        <div class="notif-warning-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h4>Clear all notifications?</h4>
+        <p>This will permanently remove all notifications from the patient side.</p>
+        <div class="notif-warning-actions">
+            <button type="button" class="notif-cancel-btn" id="cancelClearNotifBtn">Cancel</button>
+            <button type="button" class="notif-confirm-btn" id="confirmClearNotifBtn">Clear All</button>
+        </div>
+    </div>
+</div>
+
+<div id="tipsPanel" class="side-panel">
+    <div class="panel-header d-flex justify-content-between align-items-center p-3 border-bottom">
+        <h5 class="fw-bold mb-0">Dental Care Guide 🦷</h5>
+        <button type="button" class="btn-close" id="closeTips"></button>
+    </div>
+    
+    <div class="panel-body p-3">
+        <div class="mb-4">
+            <input type="text" class="form-control form-control-sm" placeholder="Search for a tip..." id="tipSearch">
+        </div>
+
+        <div class="offcanvas-body p-0" style="overflow-y: auto; height: calc(100vh - 150px);">
+            <div class="tip-category mb-4">
+                <h6 class="text-primary fw-bold small text-uppercase">Post-Procedure Care</h6>
+                <div class="tip-item p-2 mb-2 rounded border-start border-4 border-primary bg-theme">
+                    <span class="d-block fw-bold small">After Root Canal</span>
+                    <p class="mb-0 extra-small text-muted">Avoid chewing on the treated tooth until it is fully restored by your dentist.</p>
+                </div>
+                <div class="tip-item p-2 mb-2 rounded border-start border-4 border-primary bg-theme">
+                    <span class="d-block fw-bold small">Post-Extraction Care</span>
+                    <p class="mb-0 extra-small text-muted">Avoid using straws or smoking for 48 hours to prevent dry socket.</p>
+                </div>
+            </div>
+
+            <div class="tip-category mb-4">
+                <h6 class="text-success fw-bold small text-uppercase">Daily Habits</h6>
+                <div class="tip-item p-2 mb-2 rounded border-start border-4 border-success bg-theme">
+                    <span class="d-block fw-bold small">The 2-Minute Rule</span>
+                    <p class="mb-0 extra-small text-muted">Brush for at least two minutes, twice a day, to effectively remove plaque.</p>
+                </div>
+                <div class="tip-item p-2 mb-2 rounded border-start border-4 border-success bg-theme">
+                    <span class="d-block fw-bold small">Floss Daily</span>
+                    <p class="mb-0 extra-small text-muted">Flossing removes plaque between teeth where a toothbrush cannot reach.</p>
+                </div>
+                <div class="tip-item p-2 mb-2 rounded border-start border-4 border-success bg-theme">
+                    <span class="d-block fw-bold small">Tongue Cleaning</span>
+                    <p class="mb-0 extra-small text-muted">Clean your tongue daily to remove bacteria and maintain fresh breath.</p>
+                </div>
+            </div>
+
+            <div class="tip-category mb-4">
+                <h6 class="text-warning fw-bold small text-uppercase">Diet & Nutrition</h6>
+                <div class="tip-item p-2 mb-2 rounded border-start border-4 border-warning bg-theme">
+                    <span class="d-block fw-bold small">The Water Rinse</span>
+                    <p class="mb-0 extra-small text-muted">Rinse with water after meals to neutralize acids if you can't brush immediately.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal" class="service-modal">
+    <div class="gmd-modal-content" style="width: 380px;">
+        <div class="icon-box-archive"><i class="bi bi-archive"></i></div>
+        <h3>Move to Archive?</h3>
+        <p>This will hide the appointment from your active list. You can restore it later from the Archive tab.</p>
+        <div class="modal-btn-grid">
+            <button class="btn-glass" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn-gradient" id="confirmDeleteBtn">Archive</button>
+        </div>
+    </div>
+</div>
+
+<div id="permanentDeleteModal" class="service-modal">
+    <div class="gmd-modal-content" style="width: 380px;">
+        <div class="icon-box-danger"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <h3>Delete Permanently?</h3>
+        <p>This action <strong>cannot be undone</strong>. This record will be removed from your database forever.</p>
+        <div class="modal-btn-grid">
+            <button class="btn-glass" onclick="closePermanentDeleteModal()">Cancel</button>
+            <button class="btn-danger-final" id="confirmPermanentDeleteBtn">Delete</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="clearArchiveModal" class="modal-overlay">
+    <div class="modal-content text-center">
+        <div class="modal-icon mb-3">
+            <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+        </div>
+        <h3 class="fw-bold">Clear All Records?</h3>
+        <p class="text-muted">Are you sure you want to permanently delete ALL archived records? This action <strong>cannot be undone</strong>.</p>
+        <div class="modal-actions d-flex justify-content-center gap-2 mt-4">
+            <button class="btn btn-light px-4" onclick="closeClearModal()">Cancel</button>
+            <button class="btn btn-danger px-4" id="confirmClearAllBtn">Clear Everything</button>
+        </div>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="serviceDetailsPanel">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="fw-bold mb-0">Service Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <h2 id="panelTitle" class="text-primary fw-bold mb-2"></h2>
+        <p id="panelDescription" class="text-muted small mb-4"></p>
+        <div class="row g-2 mb-4">
+            <div class="col-6">
+                <div class="p-3 border rounded text-center bg-theme">
+                    <small class="text-muted d-block mb-1">INVESTMENT</small>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-wallet2 text-primary"></i> <h5 class="mb-0 fw-bold">₱300</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="p-3 border rounded text-center bg-theme">
+                    <small class="text-muted d-block mb-1">DURATION</small>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-clock text-primary"></i> <h5 class="mb-0 fw-bold">15 mins</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="included-section mt-4">
+            <h5 class="fw-bold mb-3">What's Included:</h5>
+            <ul id="panelIncludes" class="list-unstyled ps-0"></ul>
+        </div>
+        <div class="mt-auto pt-5 d-grid">
+            <button class="btn btn-primary btn-lg rounded-pill shadow" data-bs-dismiss="offcanvas" 
+                    onclick="goToBooking(document.getElementById('panelTitle').innerText)">
+                Book This Service
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div id="invoiceModal" class="service-modal" onclick="if(event.target===this) closeInvoiceModal()">
+    <div class="service-modal-content invoice-modal-card">
+        <div class="modal-header">
+            <h4>Invoice</h4>
+            <button class="modal-close" type="button" onclick="closeInvoiceModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="invoice-details-card">
+                <div class="invoice-row"><strong>Service:</strong> <span id="invoiceService">-</span></div>
+                <div class="invoice-row"><strong>Schedule:</strong> <span id="invoiceSchedule">-</span></div>
+                <div class="invoice-row"><strong>Total Amount:</strong> <span id="invoiceTotal">₱0</span></div>
+                <div class="invoice-row"><strong>Paid So Far:</strong> <span id="invoicePaid">₱0</span></div>
+                <div class="invoice-row"><strong>Remaining Balance:</strong> <span id="invoiceRemaining">₱0</span></div>
+                <div class="invoice-row"><strong>Payment Method:</strong> <span id="invoiceMethod">-</span></div>
+                <div class="invoice-row"><strong>Payment Status:</strong> <span id="invoiceStatus">Unpaid</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rescheduleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <input type="hidden" id="rescheduleAppointmentId">
+        <div class="modal-content border-0 reschedule-modal-content">
+            <div class="modal-header reschedule-modal-header">
+                <h5 class="modal-title">Request Reschedule</h5>
+                <button type="button" class="btn-close reschedule-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body reschedule-modal-body">
+                    <p class="small reschedule-helper-text" id="rescheduleHelperText">
+                        Please select a new preferred date for your <strong>appointment</strong>.
+                    </p>
+
+                <div class="mb-3">
+                    <label class="form-label small text-uppercase fw-bold reschedule-label">New Date</label>
+                    <input type="date" id="newDateInput" class="form-control reschedule-input">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small text-uppercase fw-bold reschedule-label">New Time</label>
+                    <select id="newTimeInput" class="form-control reschedule-input">
+                        <option value="">Select time</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small text-uppercase fw-bold reschedule-label">Reason (Optional)</label>
+                    <textarea id="rescheduleReason" class="form-control reschedule-input" rows="2" placeholder="e.g. I am not available that day"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="submitRescheduleBtn" class="btn btn-primary">Submit Request</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="patientActionBackdrop" class="patient-action-backdrop" onclick="closeAllPatientActionMenus()"></div>
+
+
+<div class="chatbot-fab" id="chatbotFab">
+  <i class="bi bi-chat-dots-fill"></i>
+</div>
+
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-header">
+    <strong>G-M Dental Assistant</strong>
+    <button type="button" id="closeChatbot">×</button>
+  </div>
+
+  <div class="chatbot-body" id="chatbotMessages">
+    <div class="bot-msg">
+      Hi! I can help you with booking, services, billing, appointments, and oral care tips.
+    </div>
+  </div>
+
+  <div class="chatbot-quick-actions">
+    <button type="button" class="chat-chip" data-chat="How do I book an appointment?">Booking Help</button>
+    <button type="button" class="chat-chip" data-chat="What does my appointment status mean?">Status Help</button>
+    <button type="button" class="chat-chip" data-chat="Why is there a down payment?">Payment Help</button>
+    <button type="button" class="chat-chip" data-chat="Explain my selected service.">Service Help</button>
+  </div>
+
+  <div class="chatbot-footer">
+    <input
+      type="text"
+      id="chatbotInput"
+      placeholder="Ask about your booking, billing, service, or appointment..."
+    />
+    <button type="button" id="sendChatbotBtn">Send</button>
+  </div>
+</div>
+
+        </div>
+        <div id="toastMessage" class="toast"></div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="patient.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>G-M Dental | Dentist Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dentist_page.css">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><i class="bi bi-heart-pulse-fill"></i></div>
+        <span>G-M Dental</span>
+      </div>
+
+      <button class="menu-toggle" type="button" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <nav class="side-nav">
+        <div class="nav-label">MAIN MENU</div>
+
+        <a href="#" id="link-dash" class="nav-link active" onclick="showSection('dashboard')">
+          <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
+        </a>
+        <a href="#" id="link-schedule" class="nav-link" onclick="showSection('schedule')">
+          <i class="bi bi-calendar-week"></i><span>Schedule</span>
+        </a>
+        <a href="#" id="link-patients" class="nav-link" onclick="showSection('patients')">
+          <i class="bi bi-people"></i><span>Patients</span>
+        </a>
+        <a href="#" id="link-services" class="nav-link" onclick="showSection('services')">
+          <i class="bi bi-bag-heart"></i><span>Services</span>
+        </a>
+        <a href="#" id="link-history" class="nav-link" onclick="showSection('history')">
+          <i class="bi bi-clock-history"></i><span>Treatment Log</span>
+        </a>
+        <a href="#" id="link-archive" class="nav-link" onclick="showSection('archive')">
+          <i class="bi bi-archive"></i><span>Archive</span>
+        </a>
+
+        <div class="nav-label">ACCOUNT</div>
+
+        <a href="#" id="link-profile" class="nav-link" onclick="showSection('profile')">
+          <i class="bi bi-person-gear"></i><span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" id="globalSearch" placeholder="Search patients, services, or schedule...">
+        </div>
+
+        <div class="user-controls">
+          <div class="notif-wrapper" id="notifTrigger">
+            <i class="bi bi-bell"></i>
+            <span class="dot"></span>
+          </div>
+
+          <div class="profile-menu-wrapper">
+            <div class="profile-pill" id="profileMenuTrigger">
+              <img id="header-profile-img" src="https://ui-avatars.com/api/?name=Dr+Daniel+Santos&background=4e73df&color=fff" alt="Dentist avatar">
+              <div class="text">
+                <span class="name" id="headerDentistName">Dr. Daniel Santos</span>
+                <span class="id">Orthodontist</span>
+              </div>
+            </div>
+
+            <div class="profile-dropdown-menu" id="profileDropdownMenu">
+              <button type="button" class="profile-dropdown-item" onclick="showSection('profile'); toggleProfileDropdown(true)">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+              </button>
+              <button type="button" class="profile-dropdown-item logout" onclick="logoutDentist()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Log Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="scroll-area">
+        <section id="dashboard" class="view active">
+          <div class="promo-card">
+            <div class="hero-date-container">
+              <div class="date-badge-content">
+                <i class="bi bi-calendar3"></i>
+                <div class="date-text">
+                  <span class="date-label">Today</span>
+                  <span id="currentDateDisplay" class="date-value"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="promo-text">
+              <h1 id="heroGreeting">Welcome, Doc 👋</h1>
+              <p id="heroUpcomingText">You have 0 appointments scheduled for today.</p>
+              <div class="hero-actions">
+                <button class="btn-glass" data-bs-toggle="offcanvas" data-bs-target="#todayPanel">View Today</button>
+                <button class="btn-outline-soft" onclick="showSection('schedule')">Manage Schedule</button>
+              </div>
+            </div>
+
+            <div class="promo-visual">
+              <div class="visual-ring ring-one"></div>
+              <div class="visual-ring ring-two"></div>
+              <div class="visual-card float-card card-one">
+                <i class="bi bi-clipboard2-pulse"></i>
+                <span>Patient Flow</span>
+              </div>
+              <div class="visual-card float-card card-two">
+                <i class="bi bi-check2-circle"></i>
+                <span>Ready for Duty</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid mt-4">
+            <div class="left">
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-left">
+                    <div class="stat-icon b-blue"><i class="bi bi-calendar-check"></i></div>
+                    <div>
+                      <p>Today&apos;s Queue</p>
+                      <h3 id="statTodayCount">0</h3>
+                    </div>
+                  </div>
+                  <button class="btn-gradient mt-3" onclick="showSection('schedule')">Open Schedule</button>
+                </div>
+
+                <div class="stat-item">
+                  <div class="stat-left">
+                    <div class="stat-icon b-purple"><i class="bi bi-people-fill"></i></div>
+                    <div>
+                      <p>Patients</p>
+                      <h3 id="statPatientCount">0</h3>
+                    </div>
+                  </div>
+                  <button class="btn-gradient mt-3" onclick="showAddPatientModal()">Add Patient</button>
+                </div>
+
+                <div class="stat-item">
+                  <div class="stat-left">
+                    <div class="stat-icon b-orange"><i class="bi bi-heart-pulse"></i></div>
+                    <div>
+                      <p>Pending Cases</p>
+                      <h3 id="statPendingCount">0</h3>
+                    </div>
+                  </div>
+                  <button class="btn-gradient mt-3" onclick="filterSchedule('Pending')">Review Cases</button>
+                </div>
+              </div>
+
+              <div class="settings-card modern-card mt-4">
+                <div class="card-header">
+                  <h5>Today&apos;s Appointments</h5>
+                  <i class="bi bi-list-task icon-soft"></i>
+                </div>
+                <div class="table-modern">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Patient</th>
+                        <th>Service</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboardTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="right">
+              <div class="settings-card reminder-card">
+                <div class="reminder-header">
+                  <div class="reminder-title">
+                    <div class="reminder-icon"><i class="bi bi-bell-fill"></i></div>
+                    <h5>Clinical Reminders</h5>
+                  </div>
+                  <div class="reminder-count"><i class="bi bi-play-fill"></i><span id="reminderCount">3</span></div>
+                </div>
+                <ul class="reminder-list" id="reminderList"></ul>
+              </div>
+
+              <div class="settings-card modern-card mt-4">
+                <div class="card-header d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="fw-bold m-0">Quick Notes</h5>
+                  <i class="bi bi-journal-medical fs-4"></i>
+                </div>
+                <div class="tips-banner-bg notes-box">
+                  <textarea id="quickNotes" class="quick-notes-input" placeholder="Add your notes for today..."></textarea>
+                </div>
+                <div class="tips-link-container mt-3">
+                  <button class="more-tips-link btn-link-clean" onclick="saveQuickNotes()">Save Notes <i class="bi bi-chevron-right"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="schedule" class="view">
+          <div class="page-head">
+            <div>
+              <h2 class="section-title mb-1">Appointment Schedule</h2>
+              <p class="section-subtitle">Approve, complete, reschedule, or archive patient bookings.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn-soft" onclick="showAddAppointmentModal()"><i class="bi bi-plus-lg"></i> Add Appointment</button>
+              <button class="btn-gradient" onclick="showSection('archive')"><i class="bi bi-archive"></i> View Archive</button>
+            </div>
+          </div>
+
+          <div class="toolbar-card"> 
+          <div class="toolbar-grid">
+            <input type="text" id="scheduleSearch" class="form-control form-dark" placeholder="Search patient or service...">
+
+            <select id="statusFilter" class="form-control form-dark">
+              <option value="All">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ✅ PUT IT HERE -->
+    <div class="settings-card modern-card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Approved Booked Slots</h5>
+
+    <div class="d-flex align-items-center gap-2">
+      <span class="badge upcoming">Approved Only</span>
+
+      <button
+        type="button"
+        class="expand-slots-btn"
+        onclick="openBookedSlotsModal()"
+        title="Expand booked slots">
+        <i class="bi bi-arrows-fullscreen"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="bookedSlotsList" class="booked-slots-list"></div>
+</div>
+
+          <div class="settings-card mt-4">
+            <div class="table-modern">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="scheduleTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+                  <div class="settings-card mt-4">
+          <div class="card-header d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold m-0">Reschedule Requests</h5>
+            <span class="badge pending" id="rescheduleRequestCount">0</span>
+          </div>
+
+          <div class="table-modern">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Service</th>
+                  <th>Before</th>
+                  <th>Requested</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="rescheduleTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        </section>
+
+        <section id="patients" class="view">
+          <div class="page-head">
+            <div>
+              <h2 class="section-title mb-1">Patient Directory</h2>
+              <p class="section-subtitle">Mirror of the patient side with treatment-focused dentist controls.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn-gradient" onclick="showAddPatientModal()"><i class="bi bi-person-plus"></i> Add Patient</button>
+            </div>
+          </div>
+
+          <div class="patients-grid" id="patientCards"></div>
+
+        <div class="mt-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Disabled Patients</h4>
+            <small class="text-muted">Hidden from active directory</small>
+          </div>
+          <div id="disabledPatientCards" class="patients-grid"></div>
+        </div>
+        </section>
+
+        <section id="services" class="view">
+          <h2 class="section-title">Available Services</h2>
+          <div class="services-wrapper" id="serviceGrid"></div>
+        </section>
+
+        <section id="history" class="view">
+          <h2 class="section-title">Treatment Log</h2>
+          <button class="action-chip" onclick="restoreRejectedAppointment('${item.id}')">Undo Reject</button>
+          <div class="settings-card">
+            <div class="table-modern">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Schedule</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="archive" class="view section-padding">
+          <div class="page-head">
+            <div>
+              <h2 class="section-title mb-1">Archived Records</h2>
+              <p class="section-subtitle">Hidden from the active queue but still restorable.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn-danger-soft" onclick="clearArchive()"><i class="bi bi-trash3"></i> Clear All</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="table-modern">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Schedule</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="archiveTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile" class="view">
+          <div class="container-fluid py-4 px-0">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+              <h2 class="fw-bold mb-0">Dentist Settings</h2>
+              <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="darkModeToggle">
+                  <input type="checkbox" id="darkModeToggle" />
+                  <div class="slider">
+                    <div class="thumb-icon-container">
+                      <i class="bi bi-moon-stars-fill moon-icon-thumb"></i>
+                      <i class="bi bi-sun-fill sun-icon-thumb"></i>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="text-center mb-5">
+              <div class="position-relative d-inline-block">
+                <img src="https://ui-avatars.com/api/?name=Dr+Daniel+Santos&background=4e73df&color=fff" id="profileDisplay" class="rounded-circle border border-4 border-white shadow" style="width:150px;height:150px;object-fit:cover;">
+                <label for="photoUpload" class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle p-2 shadow" style="cursor:pointer;">
+                  <i class="bi bi-camera-fill"></i>
+                  <input type="file" id="photoUpload" hidden accept="image/*">
+                </label>
+              </div>
+              <h3 class="mt-3 fw-bold mb-0" id="profileHeadingName">Dr. Daniel Santos</h3>
+              <p class="text-muted small mb-0">Dentist ID: D-2026-014</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+              <div class="col-md-5">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                  <h5 class="fw-bold mb-4">Profile Details</h5>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Full Name</label>
+                    <input type="text" id="profileFullName" class="form-control bg-transparent" value="Dr. Daniel Santos" disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Email</label>
+                    <input type="email" id="profileEmail" class="form-control bg-transparent" value="dr.daniel@email.com" disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Specialty</label>
+                    <input type="text" id="profileSpecialty" class="form-control bg-transparent" value="Orthodontist" disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Phone Number</label>
+                    <input type="text" id="profilePhone" class="form-control bg-transparent" value="09123456789" disabled>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                  <h5 class="fw-bold mb-4">Availability & Security</h5>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Clinic Schedule</label>
+                    <input type="text" id="profileSchedule" class="form-control bg-transparent" value="Mon, Wed, Fri • 9:00 AM - 4:00 PM" disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">New Password</label>
+                    <input type="password" id="profileNewPassword" class="form-control bg-transparent" placeholder="••••••••" disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small text-muted">Confirm Password</label>
+                    <input type="password" id="profileConfirmPassword" class="form-control bg-transparent" placeholder="••••••••" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center mt-5">
+              <button id="editProfileBtn" class="btn btn-primary btn-lg px-5 rounded-pill shadow">Edit Profile</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="todayPanel" style="width:400px;">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title fw-bold">Today&apos;s Queue</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="appointment-header mb-4">
+        <span id="queueStatusBadge" class="badge upcoming mb-2">Daily Overview</span>
+        <h3 id="todayPanelTitle">No active queue</h3>
+        <p id="todayPanelSubtitle" class="small">Your approved and pending appointments for today will appear here.</p>
+      </div>
+      <ul id="todayQueueList" class="list-unstyled queue-list mb-0"></ul>
+    </div>
+  </div>
+
+<div id="notifPanel" class="notif-panel">
+    <div class="notif-header">
+        <h5>Notifications</h5>
+        <button class="notif-close" id="closeNotif" type="button">&times;</button>
+    </div>
+
+    <div class="notif-body">
+        <ul id="notifList" class="notif-list"></ul>
+    </div>
+
+    <div class="notif-footer">
+        <button type="button" class="notif-footer-btn" id="markAllReadBtn">
+            Mark all as read
+        </button>
+        <button type="button" class="notif-see-all-btn" id="openAllNotifModal">
+            See all
+        </button>
+    </div>
+</div>
+
+<div id="allNotifModal" class="notif-modal-overlay">
+    <div class="notif-modal-card">
+        <div class="notif-modal-header">
+            <h4>All Notifications</h4>
+            <button type="button" class="notif-close" id="closeAllNotifModal">&times;</button>
+        </div>
+
+        <div class="notif-modal-toolbar">
+            <button type="button" class="notif-toolbar-btn" id="modalMarkAllReadBtn">
+                Mark all as read
+            </button>
+            <button type="button" class="notif-toolbar-btn danger" id="clearAllNotifBtn">
+                Clear all
+            </button>
+        </div>
+
+        <div class="notif-modal-body">
+            <ul id="allNotifList" class="notif-list notif-list-full"></ul>
+        </div>
+    </div>
+</div>
+
+<div id="clearNotifWarningModal" class="notif-warning-overlay">
+    <div class="notif-warning-card">
+        <div class="notif-warning-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h4>Clear all notifications?</h4>
+        <p>This will permanently remove all dentist notifications.</p>
+        <div class="notif-warning-actions">
+            <button type="button" class="notif-cancel-btn" id="cancelClearNotifBtn">Cancel</button>
+            <button type="button" class="notif-confirm-btn" id="confirmClearNotifBtn">Clear All</button>
+        </div>
+    </div>
+</div>
+
+  <div id="serviceModal" class="service-modal" onclick="outsideClick(event)">
+    <div class="service-modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Service Overview</h5>
+        <button class="modal-close" type="button" onclick="closeServiceModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 id="servicePanelTitle">Service</h4>
+        <p id="servicePanelDescription" class="text-muted small"></p>
+        <ul id="servicePanelIncludes" class="service-includes-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="addAppointmentModal" class="service-modal" onclick="closeOverlayByBackdrop(event, 'addAppointmentModal')">
+    <div class="service-modal-content large-modal">
+      <div class="modal-header">
+        <h5 class="mb-0">Add Appointment</h5>
+        <button class="modal-close" type="button" onclick="closeAddAppointmentModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6"><input id="a_patient" class="form-control form-dark" placeholder="Patient Name"></div>
+          <div class="col-md-6"><input id="a_patientPhone" class="form-control form-dark" placeholder="Patient Contact"></div>
+          <div class="col-md-6"><select id="a_service" class="form-control form-dark"></select></div>
+          <div class="col-md-6"><input id="a_date" type="date" class="form-control form-dark"></div>
+          <div class="col-md-6"><input id="a_time" type="time" class="form-control form-dark"></div>
+          <div class="col-md-6"><select id="a_status" class="form-control form-dark"><option>Pending</option><option>Approved</option><option>Completed</option><option>Cancelled</option></select></div>
+          <div class="col-12"><textarea id="a_notes" class="form-control form-dark" rows="4" placeholder="Clinical notes / chief complaint"></textarea></div>
+        </div>
+        <button class="btn-gradient mt-4" onclick="addAppointment()">Save Appointment</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="patientModal" class="service-modal" onclick="closeOverlayByBackdrop(event, 'patientModal')">
+    <div class="service-modal-content large-modal">
+      <div class="modal-header">
+        <h5 class="mb-0">Add Patient</h5>
+        <button class="modal-close" type="button" onclick="closePatientModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6"><input id="p_name" class="form-control form-dark" placeholder="Full Name"></div>
+          <div class="col-md-6"><input id="p_age" type="number" class="form-control form-dark" placeholder="Age"></div>
+          <div class="col-md-6">
+            <select id="p_gender" class="form-control form-dark">
+              <option value="">Select Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="col-md-6"><input id="p_contact" class="form-control form-dark" placeholder="Contact Number"></div>
+          <div class="col-md-6"><input id="p_condition" class="form-control form-dark" placeholder="Dental Concern"></div>
+          <div class="col-md-6"><input id="p_lastVisit" type="date" class="form-control form-dark"></div>
+          <div class="col-12"><input id="p_address" class="form-control form-dark" placeholder="Address"></div>
+        </div>
+        <button class="btn-gradient mt-4" onclick="addPatient()">Save Patient</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmArchiveModal" class="service-modal" onclick="closeOverlayByBackdrop(event, 'confirmArchiveModal')">
+    <div class="service-modal-content confirm-modal">
+      <div class="modal-body text-center">
+        <div class="delete-icon-box"><i class="bi bi-archive"></i></div>
+        <h3>Archive this appointment?</h3>
+        <p>This will remove the record from the history and move it to archived records.</p>
+        <div class="modal-btn-grid">
+          <button class="btn-glass" onclick="closeArchiveModal()">Cancel</button>
+          <button class="btn-danger-final" id="confirmArchiveBtn">Archive</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bookedSlotsModal" class="service-modal" onclick="if(event.target===this) closeBookedSlotsModal()">
+  <div class="service-modal-content booked-slots-modal-card">
+    <div class="modal-header">
+      <h4>All Approved Booked Slots</h4>
+      <button class="modal-close" type="button" onclick="closeBookedSlotsModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="bookedSlotsModalList" class="booked-slots-modal-list"></div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="dentist_page.js"></script>
+</body>
+</html>

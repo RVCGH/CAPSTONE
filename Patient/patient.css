@@ -1,0 +1,6550 @@
+
+:root {
+    --bg-main: #f5f7fb;
+    --sidebar-bg: #ffffff;
+    --accent: #4e73df;
+    --accent-light: #6b8cff;
+    --accent-glow: rgba(78,115,223,0.25);
+
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+
+    --border-light: rgba(0,0,0,0.08);
+    --glass: rgba(0,0,0,0.03);
+    --sidebar-width: 210px;
+    --sidebar-collapsed-width: 100px;
+}
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+/* Base */
+body {
+    font-size: 12.5px;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Layout */
+.app-shell {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+    padding: 2rem 1.5rem;
+    z-index: 1000;
+    overflow: hidden;
+    box-sizing: border-box;
+
+    transition: width 0.42s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: width;
+}
+.brand {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 1.15rem;
+    margin-bottom: 3rem;
+    overflow: hidden; /* 🔥 important */
+}
+
+.brand-logo {
+    min-width: 40px;
+    height: 40px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+}
+
+
+.nav-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 1.5px;
+    margin: 2rem 0 1rem 0.5rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1rem;
+    color: #94a3b8;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease,
+        gap 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* Hover = soft colored highlight */
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    transform: translateX(3px);
+}
+
+/* Active = strong gradient */
+.nav-link.active {
+    background: #5c7fef; 
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(92, 127, 239, 0.35);
+}
+
+/* Main */
+.app-shell {
+    display: flex;
+}
+
+.main-content {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    box-sizing: border-box;
+
+    transition:
+        margin-left 0.42s cubic-bezier(0.25, 0.8, 0.25, 1),
+        width 0.42s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: margin-left, width;
+}
+.main-header {
+    height: 90px;
+    padding: 0 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-light);
+    flex-shrink: 0;
+}
+
+/* Search */
+.search-box {
+    background: rgba(0,0,0,0.04);
+    padding: 0.7rem 1.2rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    width: 350px;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    margin-left: 10px;
+    width: 100%;
+    outline: none;
+}
+
+/* User */
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.notif-wrapper {
+    position: relative;
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+}
+
+/* Profile */
+.profile-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.04);
+    padding: 6px 15px 6px 6px;
+    border-radius: 50px;
+}
+
+.profile-pill img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.profile-pill .name {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.profile-pill .id {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Scroll */
+
+.scroll-area {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.view { display: none; }
+.view.active {
+    display: block;
+    animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.reminder-count i.bi-play-fill{
+    font-size: 25px;
+    color: #4e73df;
+}
+
+.btn-glass {
+    background: #fff;
+    color: #4e73df;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Stats */
+.stats-grid {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.stat-item {
+    width: 100%;  
+    min-height: 120px;            /* 🔥 THIS FIXES WIDTH */
+    display: flex;
+    flex-direction: column;   /* 🔥 stack like the design */
+    justify-content: space-between;
+
+    padding: 20px 25px;
+    border-radius: 16px;
+
+    background: #eef2ff;
+}
+
+/* Colored stat cards */
+.stat-item:nth-child(1) {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+}
+.stat-item:nth-child(2) {
+    background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+}
+.stat-item:nth-child(3) {
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
+}
+
+/* Icon colors */
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+}
+
+.b-blue { background: #4e73df; }
+.b-purple { background: #8b5cf6; }
+.b-orange { background: #f97316; }
+
+/* Section Title */
+.section-title {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Cards */
+.settings-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+}
+
+/* Services */
+.services-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    transition: 0.3s;
+    border: 1px solid var(--border-light);
+}
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(78,115,223,0.15);
+}
+.service-card .btn-gradient {
+    margin-top: auto;
+}
+/* Buttons */
+.btn-gradient {
+    width: 100%;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #4e73df, #224abe);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Form */
+.form-dark {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+    background: #fff;
+    color: var(--text-main);
+}
+
+.form-dark:focus {
+    outline: 1px solid var(--accent);
+}
+
+/* Table */
+.table thead {
+    background: rgba(0,0,0,0.04);
+}
+
+.table th, .table td {
+    color: var(--text-main);
+    border-color: var(--border-light);
+}
+
+/* Notification Panel */
+
+
+/* Hamburger button */
+.menu-toggle {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    /* 🔥 FORCE REMOVE WHITE */
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
+    outline: none;
+
+    color: #cbd5f5;
+
+    font-size: 1.4rem;
+    cursor: pointer;
+
+    margin: 12px 0 20px 0;
+
+    /* smooth look */
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+
+    transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff;
+    transform: scale(1.05);
+}
+.menu-toggle i {
+    color: #ffffff !important;
+}
+
+/* Floating hamburger *transition: 0.3s;
+}
+
+
+/* Light mode adjustment */
+body:not(.dark) .menu-toggle {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid var(--border);
+}
+
+
+/* Sidebar default */
+
+
+/* When collapsed */
+.app-shell.collapsed .sidebar {
+    width: var(--sidebar-collapsed-width);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.app-shell.collapsed .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+}
+
+.nav-link i {
+    min-width: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+/* Center icons */
+.app-shell.collapsed .nav-link {
+    justify-content: flex-start;
+    padding-left: 1.2rem;
+}
+
+
+.brand span,
+.nav-link span,
+.nav-label {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-10px);
+    max-width: 0;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.25s ease,
+        max-width 0.3s ease;
+}
+
+/* Collapse state */
+.app-shell.collapsed .nav-link span,
+.app-shell.collapsed .brand span,
+.app-shell.collapsed .nav-label {
+    opacity: 0;
+    max-width: 0;
+}
+
+
+  .notif-wrapper i.bi-bell{
+  font-size: 28px;
+  color: black;
+  }
+  .notif-wrapper i.bi-bell:hover {
+    color: #4995e7; /* example: blue on hover */
+    transform: scale(1.1); /* optional styling */
+    cursor: pointer;
+  }
+  .notif-wrapper i.bi-bell:active { /* example: blue on hover */
+    transform: scale(0.98); /* optional styling */
+    cursor: pointer;
+  }
+
+
+.notif-close {
+    width: 30px;
+    height: 30px;
+    padding-top: 0px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.05);
+    color: #333;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.notif-close:hover {
+   color: red;
+   background-color: rgb(240, 205, 205);
+   opacity: 0.7;
+
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.dashboard-grid .right {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+.app-shell:not(.collapsed) .brand span,
+.app-shell:not(.collapsed) .nav-link span,
+.app-shell:not(.collapsed) .nav-label {
+    opacity: 1;
+    transform: translateX(0);
+    max-width: 180px;
+
+    transition-delay: 0.18s; /* THIS is the magic */
+}
+
+/* ===== HERO CARD CLEAN BUILD ===== */
+
+.promo-card {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 60px 70px;
+    border-radius: 24px;
+
+    /* 🔥 CLEAN GRADIENT (no banding) */
+    background: linear-gradient(90deg, #5b7cff, #6f86ff, #7b8dfc);
+
+    overflow: hidden;
+    min-height: 240px;
+}
+
+/* TEXT */
+.promo-text {
+    position: relative;
+    z-index: 2;
+    max-width: 55%;
+}
+
+.promo-text h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.promo-text p {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 15px;
+}
+
+/* BUTTON */
+.btn-glass {
+    background: white;
+    color: #4f46e5;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* RIGHT SIDE */
+.promo-visual {
+    position: relative;
+    flex: 1;
+}
+
+/* TOOTH IMAGE */
+.promo-tooth {
+    position: absolute;
+
+    width: 400px;
+
+    right: 120px;
+    bottom: -140px;   /* 🔥 stronger push down */
+
+    z-index: 2;
+    animation: floatTooth 3s ease-in-out infinite;
+}
+
+@keyframes floatTooth {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.promo-card::before {
+    content: "";
+    position: absolute;
+
+    width: 120%;
+    height: 200px;
+
+    bottom: -120px;
+    left: 0%;
+
+    background: rgba(255,255,255,0.2);
+    transform: rotate(-14deg);
+    filter: blur(2px);
+
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* stronger curve */
+
+    z-index: 1;
+}
+
+.promo-card::after {
+    content: "";
+    position: absolute;
+
+    width: 140%;
+    height: 240px;
+
+    bottom: -160px;
+    left: -5; /* slight shift helps the flow */
+
+    background: rgba(255,255,255,0.3);
+
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* uneven wave */
+    filter: blur(1px);
+
+    transform: rotate(-7deg); /* 🔥 RIGHT side goes higher */
+
+    z-index: 1;
+}
+.promo-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 140px;
+
+    opacity: 0.9;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 25px;
+    border-radius: 16px;
+
+    background: #eef2ff;
+}
+.stat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 25px;
+    border-radius: 16px;
+
+    background: #eef2ff;
+}
+.stat-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.stat-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    color: white;
+    font-size: 18px;
+}
+
+.b-blue {
+    background: #5b7cff;
+}
+
+.b-purple {
+    background: #7c3aed;
+}
+.btn-gradient {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+
+    background: linear-gradient(90deg, #4f46e5, #2563eb);
+    color: white;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+/* ===== MODERN CARD STYLE ===== */
+.modern-card {
+    border-radius: 20px;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+/* HEADER */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-weight: 700;
+}
+
+/* ICON STYLES */
+.icon-soft {
+    font-size: 20px;
+    color: #64748b;
+}
+
+.icon-blue {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+.icon-purple {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.icon-orange {
+    background: #fff7ed;
+    color: #f97316;
+}
+
+/* LIST STYLE */
+.list-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+
+.list-item i {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.list-item:hover {
+    background: rgba(0,0,0,0.03);
+}
+
+/* DESCRIPTION */
+.card-desc {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+/* TABLE MODERN */
+/* ===== MODERN TABLE (FINAL FIX) ===== */
+
+.table-modern {
+    padding: 5px;
+}
+
+/* remove default table look */
+.table {
+    border-collapse: separate !important;
+    border-spacing: 0 12px !important;
+    background: transparent;
+}
+
+/* header */
+.table thead th {
+    border: none !important;
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+    padding: 8px 12px;
+}
+
+/* row = card */
+.table tbody tr {
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    border-radius: 14px;
+    transition: 0.2s ease;
+}
+
+/* hover */
+.table tbody tr:hover {
+    transform: translateY(-2px);
+}
+
+/* cells */
+.table tbody td {
+    border: none !important;
+    padding: 14px;
+    vertical-align: middle;
+}
+
+/* rounded edges */
+.table tbody tr td:first-child {
+    border-radius: 14px 0 0 14px;
+}
+
+.table tbody tr td:last-child {
+    border-radius: 0 14px 14px 0;
+}
+
+/* STATUS BADGES */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* colors */
+.badge.pending {
+    background: #ffe9d6;
+    color: #d9822b;
+}
+
+.badge.completed {
+    background: #dff5e7;
+    color: #2e9d5b;
+}
+
+.badge.upcoming {
+    background: #e6e9ff;
+    color: #5a6df0;
+}
+
+/* delete icon */
+.table i {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.table i:hover {
+    transform: scale(1.2);
+}
+/* ===== REMINDER CARD ===== */
+.reminder-card {
+    border-radius: 20px;
+    padding: 20px;
+    background: #ffffff;
+}
+
+/* HEADER */
+.reminder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* LEFT SIDE */
+.reminder-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reminder-title h5 {
+    margin: 0;
+    font-weight: 700;
+}
+
+/* BELL ICON (FIXED STYLE) */
+.reminder-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #e0e7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4f46e5;
+    font-size: 14px;
+}
+
+/* RIGHT SIDE COUNT */
+.reminder-count {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* BULLET LIST (LIKE REFERENCE) */
+.reminder-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reminder-list li {
+    position: relative;
+    padding: 12px 0 12px 18px;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+/* BULLET DOT */
+.reminder-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 18px;
+
+    width: 6px;
+    height: 6px;
+
+    background: #5b7cff;
+    border-radius: 50%;
+}
+
+/* REMOVE LAST BORDER */
+.reminder-list li:last-child {
+    border-bottom: none;
+}
+
+/* HERO SECTION */
+.hero {
+    padding: 20px 25px;
+}
+
+/* STATS */
+.stat-item {
+    padding: 12px 16px;
+}
+
+.stat-item h3 {
+    font-size: 1.3rem;
+}
+
+/* CARDS */
+.settings-card {
+    padding: 16px;
+    border-radius: 16px;
+}
+
+/* TABLE */
+.table td, .table th {
+    padding: 10px;
+}
+
+/* RIGHT SIDE FIX */
+.right {
+    padding-top: 50px; /* keep alignment */
+}
+
+/* ===== RESIZE / SCALE FIX (NON-DESTRUCTIVE) ===== */
+
+/* ===== FINAL SCALE (SLIGHTLY SMALLER) ===== */
+
+body {
+    font-size: 12.5px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 210px;
+}
+
+.main-content {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+}
+
+/* Header */
+.main-header {
+    height: 65px;
+    padding: 0 1.5rem;
+}
+
+/* Cards */
+.settings-card,
+.service-card,
+.modern-card,
+.reminder-card {
+    padding: 1rem;
+    border-radius: 14px;
+}
+
+/* Titles inside cards */
+.service-card h4,
+.section-title {
+    font-size: 0.95rem;
+}
+
+/* Stats */
+.stat-item {
+    padding: 10px 14px;
+}
+
+.stat-item h3 {
+    font-size: 1.05rem;
+}
+
+/* Buttons */
+.btn-gradient,
+.btn-glass {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+}
+
+/* Tables */
+.table td,
+.table th {
+    padding: 6px;
+    font-size: 0.8rem;
+}
+
+/* Promo */
+.promo-card {
+    padding: 30px 40px;
+    min-height: 180px;
+}
+
+.promo-text h1 {
+    font-size: 20px;
+}
+
+/* Image */
+.promo-tooth {
+    width: 260px;
+    bottom: -110px;
+}
+
+/* Notifications */
+
+
+/* Collapsed */
+
+
+
+.sidebar.expanded .nav-link {
+    justify-content: flex-start;
+    padding-left: 20px; /* Adjust to match your other items */
+}
+
+/* 1. Remove all unique positioning and let it sit inside .main-content */
+/* 1. Force the Archive view to take up the full width of the main content area */
+#archive.view.active {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: -15px; /* Adjust this to match the padding in your Services section */
+}
+
+/* 2. Target the Bootstrap container inside the Archive and make it fluid */
+#archive .container {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* 3. Ensure the table card also stretches */
+#archive .table-responsive, 
+#archive .card {
+    width: 100% !important;
+}
+
+/* 4. Optional: Prevent text jumping during the sidebar slide */
+#archive h2, #archive p {
+    transition: all 0.3s ease;
+}
+
+
+#billing-section .settings-card {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: 1px solid var(--border-light);
+}
+
+#billing-section label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+
+.payment-card {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    background: #dee0e3;
+    color: #0a0a0a;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.payment-card:hover {
+    border-color: #4f46e5;
+}
+
+.payment-card.active {
+    color:#f1f5f9;
+    border-color: #4f46e5;
+    background: #312e81;
+}
+
+.payment-form {
+    margin-top: 15px;
+}
+
+/* Container Fix */
+.payment-card[data-method="gcash"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    transition: 0.3s ease;
+}
+
+/* Image/Logo Fix */
+.payment-logo {
+    width: 45px;          /* Restricts width */
+    height: 45px;         /* Restricts height */
+    object-fit: contain;  /* Maintains aspect ratio without stretching */
+    margin-bottom: 8px;   /* Space between logo and text */
+}
+
+/* Active State (Matches GCash Blue) */
+.payment-card[data-method="gcash"].active {
+    background: #007CFF !important;
+    border-color: #0056b3 !important;
+    color: #ffffff;
+}
+
+/* Hover Effect */
+.payment-card[data-method="gcash"]:hover {
+    border-color: #007CFF;
+    background: rgba(0, 124, 255, 0.05);
+}
+
+/* Container for the 4 cards */
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: stretch;/* 🔥 KEY FIX */
+}
+
+/* Individual Card Fixes */
+.payment-card {
+    background: #e0e3eb; /* Matches your dashboard-grid theme */
+    border: 1px solid #323a4d;
+    border-radius: 12px;
+    padding: 15px 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally center */
+    justify-content: center; /* Vertically center */
+    text-align: center;
+    min-height: 110px; /* Forces all cards to be the same height */
+    height: 100%;
+}
+
+/* The Icon Wrapper - This is what stops the design from breaking */
+.method-icon {
+    height: 32px; /* Fixed height so labels align perfectly */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* Size for the emojis */
+    margin-bottom: 4px;
+}
+
+/* Fixed GCash Logo Size */
+.payment-logo {
+    width: 28px; 
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Label Styling */
+.payment-card strong {
+    font-size: 14px;
+    display: block;
+    line-height: 1.2;
+}
+
+.payment-card small {
+    font-size: 11px;
+    opacity: 0.7;
+    display: block;
+}
+
+/* Active State: Matches your blue Confirm button */
+.payment-card.active {
+    background: #007CFF !important; 
+    border-color: #0056b3 !important;
+}
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+
+    background: #ffffff; /* clean white */
+    color: #333;
+    padding: 14px 22px;
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid #4CAF50; /* subtle success indicator */
+
+    opacity: 0;
+    transition: all 0.3s ease;
+
+    z-index: 9999;
+}
+
+/* SHOW */
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.booking-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.2fr;
+    grid-template-areas:
+        "step1 step2"
+        "step3 step3";
+    gap: 20px;
+    align-items: stretch;
+}
+.step1, .step2 {
+    display: flex;
+    flex-direction: column;
+}
+.step1 { grid-area: step1; }
+.step2 { grid-area: step2; }
+.step3 { grid-area: step3; }
+
+
+
+.step2 .row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: nowrap; /* 🔥 prevents stacking */
+}
+
+.step2 .col-md-6:first-child {
+    flex: 1; /* calendar */
+}
+
+.step2 .col-md-6:last-child {
+    flex: 1; /* time */
+}
+.booking-card {
+    /* Change align-self or remove it */
+    align-self: stretch; 
+    
+    /* Ensure it takes up all available vertical space */
+    flex: 1; 
+    
+    /* Keep your existing styles below */
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    position: relative;
+    border: 1px solid var(--border-light);
+    z-index: 1;
+    
+    /* Add this to help internal layout */
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.booking-card .row {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+/* DATE bigger */
+.booking-card .col-md-6:first-child {
+    flex: 1.2;
+}
+
+/* TIME smaller */
+.booking-card .col-md-6:last-child {
+    flex: 1;
+}
+
+/* Step badge */
+.step-badge {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    background: #334155;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+}
+
+/* Service header */
+.service-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.service-header > div {
+    flex: 1;
+}
+
+.change-link {
+    margin-left: auto;
+}
+.booking-card.step1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 🔥 spreads content */
+    height: 100%; /* 🔥 fill grid height */
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    background: #eef2ff;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+}
+
+.change-link {
+    margin-left: auto;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+/* Included */
+.included-box {
+    margin-top: auto;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.included-box ul {
+    padding-left: 18px;
+    margin: 10px 0 0 0;
+}
+
+.included-box li {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+/* Time slots */
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Summary */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* MODAL OVERLAY */
+.service-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.4);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;      /* 🔥 ADD THIS */
+    pointer-events: none;    /* 🔥 IMPORTANT */
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.service-modal.active {
+    opacity: 1;
+    visibility: visible;     /* 🔥 ADD THIS */
+    pointer-events: auto;
+}
+
+/* MODAL BOX */
+.service-modal-content {
+    background: white;
+    padding: 0;
+    border-radius: 16px;
+    width: 400px;
+    max-height: 85vh;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: modalFade 0.25s ease;
+}
+
+#serviceList {
+    flex-grow: 1;
+    overflow-y: auto; /* This enables the scroll for the services ONLY */
+    padding: 10px 20px;
+    /* Optional: Smooth scrolling */
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for a cleaner look */
+#serviceList::-webkit-scrollbar {
+    width: 6px;
+}
+#serviceList::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+/* SMOOTH POP */
+@keyframes modalFade {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* SERVICE ITEMS */
+.service-item {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.service-item:hover {
+    background: #eef2ff;
+}
+
+/* ===== CALENDAR ===== */
+.calendar-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 15px;
+    border: 1px solid var(--border-light);
+     width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-day {
+    padding: 8px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.calendar-day:hover {
+    background: #eef2ff;
+}
+
+.calendar-day.active {
+    background: #4e73df;
+    color: #fff;
+}
+
+/* ===== TIME TOGGLE ===== */
+.time-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.time-filter {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    background: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.time-filter.active {
+    background: #4e73df;
+    color: white;
+    transform: scale(1.02);
+}
+.time-filter:active {
+    transform: scale(0.98);
+}
+/* TIME BUTTONS */
+.time-btn {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    text-align: center;
+    font-size: 13px;
+}
+
+.time-btn.active {
+    background: #4e73df;
+    color: #fff;
+}
+
+.booking-card .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.booking-card .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.booking-card .row.g-3 {
+    gap: 15px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    background: #fff; /* Ensures header isn't transparent over scrolling text */
+    flex-shrink: 0;
+}
+
+.modal-close {
+    font-size: 22px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    line-height: 1;
+}   
+
+.modal-close:hover {
+    color: #e45252;
+}
+
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto; /* This is where the scroll happens */
+    flex-grow: 1;
+}
+
+/* Ensure the close button looks right */
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.service-header > div {
+    flex: 1;
+}
+
+/* LEFT SIDE GROUP */
+.service-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1; /* 🔥 THIS MAKES IT FILL SPACE */
+}
+
+/* TEXT BLOCK */
+.service-text {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ICON FIX */
+.icon-box {
+    width: 50px;
+    height: 50px;
+    background: #eef2ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* 🔥 prevents squishing */
+}
+
+/* CHANGE LINK */
+.change-link {
+    font-size: 13px;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.notif-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.notif-wrapper .dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    background-color: #ff4d4d;
+    border-radius: 50%;
+    border: 2px solid #1a1d21;
+    /* Do NOT put display: block !important here */
+}
+#selectedService {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.service-header p {
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+/* Container for the modal content */
+/* 1. The Dimmed Overlay (Matches your Service Modal) */
+/* Container and Spacing */
+#deleteModal .service-modal-content {
+    padding: 2.5rem 1.5rem; /* More breathing room */
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon Box - Matches your Stat Icon style */
+.archive-icon-box {
+    width: 70px;
+    height: 70px;
+    background: #f0f4ff; /* Soft blue tint */
+    color: var(--accent);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+}
+
+/* Typography Adjustments */
+#deleteModal h5 {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+}
+
+#deleteModal p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* Button Alignment */
+.modal-footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Ensures identical button widths */
+    gap: 12px;
+    margin-top: 2rem;
+}
+
+/* Danger Icon Wrapper */
+.delete-icon-box {
+    width: 70px;
+    height: 70px;
+    background: #fff1f2; /* Soft red tint */
+    color: #e11d48;     /* Danger red */
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    font-size: 2rem;
+}
+
+/* Final Delete Button */
+.btn-delete-final {
+    background: #e11d48;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: 0.2s ease;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+}
+
+.btn-delete-final:hover {
+    background: #be123c;
+    transform: translateY(-2px);
+}
+
+/* Ensure consistent grid for footer buttons */
+.modal-footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 2rem;
+}
+
+/* Container - Ensures the modal box is large and centered */
+.gmd-modal-content {
+    background: #ffffff;
+    padding: 3rem 2rem; /* Big padding prevents the text-squashing seen in your screenshot */
+    border-radius: 28px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 400px; /* Fixed width prevents horizontal overflow */
+    max-width: 90%;
+    margin: auto;
+}
+
+/* Red Danger Icon Box */
+.icon-box-danger {
+    width: 80px;
+    height: 80px;
+    background: #fff1f2;
+    color: #e11d48;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    font-size: 2.5rem;
+}
+.icon-box-archive {
+    width: 80px;
+    height: 80px;
+    background: rgba(183, 223, 235, 0.315);
+    color: #2b74e9;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    font-size: 2.5rem;
+}
+
+/* Typography - Bold and Clear */
+.gmd-modal-content h3 {
+    font-size: 1.6rem;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.gmd-modal-content p {
+    font-size: 1rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+/* Button Layout - Uses Grid to keep buttons perfectly aligned */
+.modal-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.btn-danger-final {
+    background: #e11d48;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+/* Base Transition for all buttons (Add this to your existing base classes) */
+.btn-danger-final, .btn-glass, .btn-gradient {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* This makes the movement smooth */
+}
+
+/* Red Delete Button Hover */
+.btn-danger-final:hover {
+    background: #be123c;
+    transform: translateY(-3px); /* Slightly more lift for better feedback */
+    box-shadow: 0 8px 15px rgba(225, 29, 72, 0.3); /* Adds a soft glow on hover */
+}
+
+.btn-glass {
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Initial shadow (very light) */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. The HOVER SHADOW - This is the "Effect" you were looking for */
+.btn-glass:hover {
+    background: rgba(183, 223, 235, 0.5);
+    color: #1a4a99;
+    transform: translateY(-3px); /* Lifts the button */
+    
+    /* SHADOW EFFECT: Increases blur and spread to simulate height */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+}
+
+/* 3. Apply similar logic to Archive/Delete for consistency */
+.btn-gradient:hover, .btn-danger-final:hover {
+    transform: translateY(-3px);
+    /* Color-tinted shadows make the UI look more modern */
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); 
+}
+
+/* Blue Archive / Gradient Button Hover */
+.btn-gradient:hover {
+    background-color: #1a4a99;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(26, 74, 153, 0.2);
+}
+
+/* Active State (Click effect) */
+.btn-danger-final:active, .btn-gradient:active {
+    transform: translateY(-1px); /* Moves back down slightly when clicked */
+}
+
+/* Specific Tips Card Overhaul */
+.tips-link-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding-top: 10px;
+    padding-right: 90px; /* moves the link left so chatbot won't cover it */
+}
+
+.tips-title-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4338ca; /* Deep indigo for header */
+    margin-bottom: 16px;
+}
+
+.tips-title-area h5 {
+    font-weight: 800;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.tips-inner-white-box {
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    width: 75%; /* Leaves space for the floating graphic */
+    backdrop-filter: blur(5px);
+}
+
+.tips-inner-white-box i {
+    color: #818cf8; /* Light blue/purple shield icon */
+    font-size: 1.2rem;
+}
+
+.tips-inner-white-box p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #4b5563;
+    margin: 0;
+}
+
+.tips-footer-link {
+    display: block;
+    text-align: right;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #4338ca;
+    text-decoration: none;
+}
+
+/* The floating illustration on the right */
+.tips-graphic {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    width: 110px;
+    pointer-events: none;
+}
+
+/* Container layout to handle the image overlap */
+.tips-body {
+    display: flex;
+    position: relative;
+    min-height: 120px;
+    align-items: center;
+}
+
+/* Updated White Box with Glassmorphism */
+.tips-inner-white-box {
+    background: rgba(255, 255, 255, 0.85); 
+    border-radius: 18px;
+    padding: 18px;
+    width: 70%; /* Ensures the box doesn't cover the image */
+    z-index: 2;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); /* Missing soft shadow */
+}
+
+/* Positioning the Missing Illustration */
+.tips-illustration-container {
+    position: absolute;
+    right: -15px; /* Pulls it slightly off the card for that 3D look */
+    bottom: -15px;
+    width: 130px;
+    z-index: 1;
+}
+
+.tips-graphic {
+    width: 100%;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1)); /* Makes the tooth pop */
+}
+
+/* Refined "More Tips" Link */
+.tips-footer-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    color: #4338ca;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    transition: transform 0.2s ease;
+}
+
+.tips-footer-link:hover {
+    transform: translateX(5px); /* Interaction feedback */
+}
+
+/* The main card container */
+.tips-bg-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 24px;
+    border: 1px solid #f1f5f9;
+}
+
+/* The inner light-blue box with your 3D background */
+.tips-banner-bg {
+    /* Replace with your local image path */
+    background-image: url('background.png'); 
+    
+    background-size: cover; /* This makes sure the background fits the whole box */
+    background-position: center;
+    border-radius: 16px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.tips-text-content {
+    /* This creates the 'left look' by giving the text breathing room */
+    padding-left: 25px; 
+    width: 60%; /* Prevents text from overlapping the 3D icons on the right */
+    z-index: 2;
+}
+
+.tips-text-content p {
+    color: #4338ca; /* Matches the deep purple/blue in your reference */
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.more-tips-link {
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #0d6efd;
+}   
+.more-tips-link:hover {
+    transform: translateX(3px);
+}
+
+/* --- CUSTOM MODAL STYLES --- */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+.modal-icon { font-size: 40px; margin-bottom: 10px; }
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-secondary { background: #e0e0e0; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+.btn-danger { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Target the description specifically */
+.service-description {
+    font-size: 1.15rem !important; /* Makes it 15% larger */
+    line-height: 1.6;               /* Adds breathing room between lines */
+    color: #4b5563;                /* Better contrast for readability */
+    margin-bottom: 20px;
+}
+
+/* Ensure icons align perfectly with the text */
+.bi {
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+/* Container and Hidden Checkbox */
+/* Container and Wrapper alignment */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+    margin: 0;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+/* 1. The Track (The blue pill) */
+.slider {
+    background-color: #3b82f6; /* Start in Brand Blue (Light Mode default) */
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    border-radius: 34px;
+    overflow: hidden; /* Important for the icon clip */
+}
+
+/* 2. The Thumb (The White Moving Circle) */
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 3. Logic for switching colors and sliding */
+/* When Dark Mode is Toggled (CHECKED) */
+input:checked + .slider {
+    background-color: #1a202c; /* Gray-900 for Dark Track */
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px); /* Move circle right */
+    background-color: #3b82f6; /* Thumb becomes blue in dark mode */
+}
+
+/* 4. Icon Logic Inside the Thumb */
+.thumb-icon-container {
+    position: absolute;
+    top: 50%;
+    left: 4px; /* Matches thumb start pos */
+    transform: translateY(-50%);
+    width: 26px; /* Matches thumb width */
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3; /* Places icon on top of thumb */
+    transition: .4s; /* Matches thumb slide time */
+}
+
+.sun-icon-thumb, .moon-icon-thumb {
+    font-size: 16px; /* Adjust size to fit thumb */
+    transition: opacity .3s ease; /* Smooth icon fade */
+    position: absolute;
+}
+
+/* LIGHT MODE STATE (Default) */
+.sun-icon-thumb {
+    color: #f59e0b; /* Amber/Sun Color */
+    opacity: 1; /* Sun is visible */
+}
+.moon-icon-thumb {
+    color: #fff; 
+    opacity: 0; /* Moon is hidden */
+}
+
+/* DARK MODE STATE (Checked) */
+input:checked + .slider .thumb-icon-container {
+    transform: translateY(-50%) translateX(26px); /* Icon container slides with thumb */
+}
+
+input:checked + .slider .sun-icon-thumb {
+    opacity: 0; /* Sun fades out */
+}
+input:checked + .slider .moon-icon-thumb {
+    color: #fff; /* Moon becomes white */
+    opacity: 1; /* Moon fades in */
+}
+
+/* Date Badge Styling */
+.date-badge-wrapper {
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Position the calendar trigger at the top right */
+/* Slimmed down Hero Date Container */
+.hero-date-container {
+    position: absolute;
+    top: 15px; /* Slightly tighter to the top */
+    right: 20px;
+    z-index: 10;
+}
+
+.date-badge-content {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px; /* Sharper corners for a smaller look */
+    padding: 5px 12px; /* Significantly reduced padding */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+/* Shorter icon */
+.date-badge-content i {
+    font-size: 1rem !important; /* Smaller icon size */
+    color: #667eea !important;
+    margin-right: 8px; /* Tighter spacing */
+}
+
+.date-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Tiny label */
+.date-label {
+    font-size: 0.55rem !important; /* Extra small font */
+    color: #667eea !important;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    opacity: 0.7;
+    line-height: 1;
+    margin-bottom: 1px;
+}
+
+/* Sleeker date value */
+.date-value {
+    font-size: 0.8rem !important; /* Reduced from 0.9rem */
+    font-weight: 700;
+    color: #667eea !important;
+    line-height: 1.1;
+}
+
+.date-badge-content:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Ensure the hero card can contain absolute elements */
+.promo-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Hidden */
+    width: 350px;
+    height: 100vh;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: 0.3s ease-in-out;
+    z-index: 1040; /* Lower than modal */ /* Higher than other elements */
+}
+
+/* This is the class the JS adds to make it slide in */
+.side-panel.active {
+    right: 0 !important;
+}
+
+.extra-small {
+    font-size: 0.75rem;
+}
+
+.tip-item {
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.tip-item:hover {
+    transform: translateX(5px);
+}
+/* Add this to your CSS */
+.tips-link-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding-top: 10px;
+    padding-right: 280px; /* moves the link left so chatbot won't cover it */
+}
+
+
+.more-tips-link {
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #0d6efd; /* Match your blue theme */
+}
+
+.detailed-bulb-icon {
+  width: 24px;
+  height: 24px;
+  /* Colors the SVG to match your blue accents */
+  filter: invert(34%) sepia(87%) saturate(1633%) hue-rotate(202deg) brightness(97%) contrast(100%);
+  /* Adds a subtle 'on' glow effect */
+  filter: drop-shadow(0 0 4px rgba(66, 133, 244, 0.4));
+  opacity: 0.9;
+}
+
+/* --- High Specificity Nav Link Styles --- */
+
+/* Base Link State */
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1rem;
+    color: #94a3b8 !important;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-decoration: none !important;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        gap 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hover State */
+/* 1. Reset the base state to ensure no weird inheritance */
+/* High-priority selector to ensure the highlight shows over the sidebar gradient */
+.sidebar .side-nav .nav-link.active {
+    background: #5c7fef !important; 
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(92, 127, 239, 0.4) !important;
+    transform: translateX(5px); /* Slight shift to show it's active */
+}
+
+/* Ensure the icon inside the active link also turns white */
+.sidebar .side-nav .nav-link.active i {
+    color: #ffffff !important;
+}
+
+#addToCalendarBtn {
+    transition: all 0.3s ease;
+    background-color: #3b82f6; /* Your brand blue */
+    border: none;
+}
+
+#addToCalendarBtn:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+/* =========================================
+   🌙 FINAL DARK MODE (BLUE PREMIUM UI)
+   DO NOT TOUCH HERO SECTION
+========================================= */
+
+body.dark-mode {
+    background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.18) 0%, transparent 32%),
+        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.14) 0%, transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(96, 165, 250, 0.08) 0%, transparent 35%),
+        linear-gradient(135deg, #081120 0%, #0b1528 45%, #0f1b33 100%);
+    color: #e6f0ff;
+}
+/* =========================
+   GLOBAL TEXT
+========================= */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label {
+    color: #e6f0ff;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+body.dark-mode .sidebar {
+    background: #0a1020;
+    border-right: 1px solid #1f2a44;
+}
+
+/* =========================
+   HEADER (FIXED)
+========================= */
+body.dark-mode .main-header {
+    background: #0f172a;
+    border-bottom: 1px solid #1f2a44;
+}
+
+body.dark-mode .search-box {
+    background: #111c33;
+}
+
+body.dark-mode .search-box input {
+    background: transparent;
+    color: #e6f0ff;
+}
+
+/* =========================
+   HERO (DO NOT CHANGE)
+========================= */
+/* intentionally left blank so your promo-card stays as-is */
+
+/* =========================
+   STAT CARDS (FIXED UNDER HERO)
+========================= */
+body.dark-mode .stat-item {
+    background: #111c33;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .stat-item p {
+    color: #94a3b8;
+}
+
+/* icons */
+body.dark-mode .stat-icon {
+    background: #0f172a;
+}
+
+/* =========================
+   CARDS (GENERAL)
+========================= */
+body.dark-mode .settings-card,
+body.dark-mode .modern-card,
+body.dark-mode .booking-card,
+body.dark-mode .reminder-card {
+    background: #0f172a;
+    border: 1px solid #1f2a44;
+}
+
+/* =========================
+   TABLES (FIXED — NO MORE GREY LOOK)
+========================= */
+/* ================================
+   🌙 DARK MODE TABLE RESET (FIXED)
+   CLEAN UNIFORM BLUE DARK STYLE
+================================ */
+
+body.dark-mode .table {
+    color: #e6f0ff;
+    border-collapse: collapse;
+    background: transparent;
+}
+
+/* HEADER */
+body.dark-mode .table thead th {
+    background: #111c33 !important;
+    color: #93c5fd !important;
+    border-bottom: 1px solid #1f2a44 !important;
+}
+
+/* REMOVE Bootstrap striping completely */
+/* remove default Bootstrap striping completely */
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd),
+body.dark-mode .table-striped > tbody > tr:nth-of-type(even) {
+    background: transparent !important;
+}
+
+/* =========================================
+   🌙 TRASH BIN ICONS RED FIX
+   (Targeting ONLY icons inside the table)
+========================================= */
+body.dark-mode .table td i.bi-trash {
+    color: #ef4444 !important; /* Force all trash icons to vibrant red */
+    opacity: 1 !important;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+/* Hover effect for the trash bins to make them stand out */
+body.dark-mode .table td i.bi-trash:hover {
+    color: #0c73aa !important; /* White on hover for maximum visibility */
+    transform: scale(1.25);
+    box-shadow: 0 0 10px rgba(11, 106, 189, 0.5); /* Subtle glow on hover */
+}
+
+/* ROWS (UNIFORM — NO DARK GRAY BLOCKS) */
+body.dark-mode .table tbody tr {
+    background: #0f172a !important;
+    border-bottom: 1px solid #1f2a44 !important;
+}
+
+/* CELLS */
+body.dark-mode .table td,
+body.dark-mode .table th {
+    background: transparent !important;
+    color: #e6f0ff !important;
+    border-color: #1f2a44 !important;
+}
+
+/* HOVER (CLEAN BLUE HIGHLIGHT) */
+body.dark-mode .table tbody tr:hover {
+    background: #111c33 !important;
+}
+
+/* TABLE WRAPPER (IMPORTANT FOR ARCHIVE / HISTORY / DASHBOARD) */
+body.dark-mode .table-responsive,
+body.dark-mode .card .table-responsive {
+    background: #0f172a !important;
+    border-radius: 12px;
+}
+
+/* =========================
+   FORMS / INPUTS
+========================= */
+body.dark-mode .form-control {
+    background: #0f172a;
+    border: 1px solid #1f2a44;
+    color: #e6f0ff;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #7f9bbd;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+body.dark-mode .btn-primary {
+    background: #3b82f6;
+    border: none;
+}
+
+body.dark-mode .btn-gradient {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+/* =========================
+   MODALS
+========================= */
+body.dark-mode .service-modal,
+body.dark-mode .modal-content,
+body.dark-mode .gmd-modal-content {
+    background: #0f172a;
+    color: #e6f0ff;
+    border: 1px solid #1f2a44;
+}
+
+/* =========================
+   OFFCANVAS PANEL
+========================= */
+body.dark-mode .offcanvas {
+    background: #0f172a;
+    color: #e6f0ff;
+}
+
+/* =========================
+   NOTIFICATIONS PANEL
+========================= */
+body.dark-mode .notif-panel {
+    background: #0f172a;
+    border-left: 1px solid #1f2a44;
+}
+
+/* =========================
+   TIPS PANEL
+========================= */
+body.dark-mode .side-panel {
+    background: #0f172a;
+    border-left: 1px solid #1f2a44;
+}
+
+/* =========================
+   CALENDAR
+========================= */
+body.dark-mode .calendar-box {
+    background: #0f172a;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .calendar-day {
+    background: #111c33;
+    color: #e6f0ff;
+}
+
+body.dark-mode .calendar-day.active {
+    background: #3b82f6;
+}
+
+/* =========================
+   TIME BUTTONS
+========================= */
+body.dark-mode .time-btn {
+    background: #111c33;
+    color: #e6f0ff;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .time-btn.active {
+    background: #3b82f6;
+}
+
+/* =========================
+   PAYMENT CARDS
+========================= */
+body.dark-mode .payment-card {
+    background: #111c33;
+    color: white;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .payment-card.active {
+    border-color: #3b82f6;
+}
+
+/* =========================
+   ARCHIVE / HISTORY CARDS
+========================= */
+body.dark-mode .service-card {
+    background: #0f172a;
+    border: 1px solid #1f2a44;
+    color: #e6f0ff;
+}
+
+/* if service cards have hover effects */
+body.dark-mode .service-card:hover {
+    background: #111c33;
+    transform: translateY(-2px);
+}
+/* =========================
+   LINKS
+========================= */
+body.dark-mode a {
+    color: #60a5fa;
+}
+
+/* =========================
+   BADGES
+========================= */
+body.dark-mode .badge {
+    background: #1f2a44;
+    color: #e6f0ff;
+}
+
+/* =========================
+   SCROLL AREA
+========================= */
+body.dark-mode .scroll-area {
+    background: #0b1220;
+}
+
+/* =========================================
+   🌙 BOOKING SECTION DARK MODE FIX
+========================================= */
+
+/* =========================
+   "WHAT'S INCLUDED" SECTION
+========================= */
+body.dark-mode .includes,
+body.dark-mode .what-included,
+body.dark-mode .included-list {
+    background: transparent !important;
+    color: #e6f0ff !important;
+}
+
+/* bullet list text */
+body.dark-mode .includes li,
+body.dark-mode .what-included li,
+body.dark-mode ul.includes li {
+    color: #e6f0ff !important;
+}
+
+/* icons inside includes */
+body.dark-mode .includes i,
+body.dark-mode .includes svg,
+body.dark-mode .what-included i,
+body.dark-mode .what-included svg {
+    color: #60a5fa !important;
+    fill: #60a5fa !important;
+}
+
+/* =========================
+   STEP 2 (MORNING / AFTERNOON)
+========================= */
+
+/* time option cards */
+body.dark-mode .time-slot,
+body.dark-mode .time-option,
+body.dark-mode .morning-slot,
+body.dark-mode .afternoon-slot {
+    background: #111c33 !important;
+    border: 1px solid #1f2a44 !important;
+    color: #e6f0ff !important;
+}
+
+/* icons in time slots */
+body.dark-mode .time-slot i,
+body.dark-mode .time-option i,
+body.dark-mode .morning-slot i,
+body.dark-mode .afternoon-slot i,
+body.dark-mode .time-slot svg {
+    color: #93c5fd !important;
+    fill: #93c5fd !important;
+}
+
+/* hover state */
+body.dark-mode .time-slot:hover,
+body.dark-mode .time-option:hover {
+    background: #0f1b33 !important;
+}
+
+ /* =========================================
+   🌙 BOOKING SECTION FINAL FIX (MATCHES YOUR HTML)
+========================================= */
+
+/* FORCE BOOKING CARDS */
+body.dark-mode .booking-card {
+    background: #0f172a !important;
+    border: 1px solid #1f2a44 !important;
+    color: #e6f0ff !important;
+}
+
+/* =========================
+   STEP 1 - "WHAT'S INCLUDED"
+========================= */
+body.dark-mode #serviceIncludes,
+body.dark-mode #serviceIncludes li {
+    color: #e6f0ff !important;
+}
+
+/* UL DEFAULT RESET (IMPORTANT) */
+body.dark-mode .booking-card ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+/* ICON IN STEP 1 */
+body.dark-mode .booking-card .icon-box i {
+    color: #60a5fa !important;
+}
+
+/* =========================
+   STEP 2 - TIME BUTTONS (REAL CLASS = time-filter)
+========================= */
+body.dark-mode .time-filter {
+    background: #111c33 !important;
+    color: #e6f0ff !important;
+    border: 1px solid #1f2a44 !important;
+}
+
+/* ACTIVE STATE */
+body.dark-mode .time-filter.active {
+    background: #2563eb !important;
+    color: #ffffff !important;
+    transition: none;
+}
+
+/* HOVER */
+body.dark-mode .time-filter:hover {
+    background: #0f1b33 !important;
+}
+
+/* =========================
+   CALENDAR FIX (if needed)
+========================= */
+body.dark-mode .calendar-box {
+    background: #0f172a !important;
+    border: 1px solid #1f2a44 !important;
+}
+
+body.dark-mode .calendar-box * {
+    color: #e6f0ff !important;
+}
+
+/* =========================
+   FORCE ICON VISIBILITY (Bootstrap Icons)
+========================= */
+body.dark-mode i.bi {
+    color: #93c5fd !important;
+}
+
+
+/* =========================
+   DARK MODE FIX: INCLUDED BOX
+========================= */
+body.dark-mode .included-box {
+    background: #0f172a !important;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .included-box li {
+    color: #e6f0ff !important;
+}
+
+body.dark-mode .included-box i {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .booking-card {
+    background: #0f172a !important;
+    border: 1px solid #1f2a44 !important;
+    color: #e6f0ff !important;
+}
+
+body.dark-mode .table tbody tr {
+    background: #0f172a !important;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+    color: #e6f0ff !important;
+}
+
+body.dark-mode .table thead th {
+    color: #93c5fd !important;
+}
+
+/* =========================================
+   🌙 SELECT SERVICE PANEL - FINAL FIX
+   (FORCES ALL POSSIBLE WHITE SOURCES)
+========================================= */
+
+/* TARGET EVERYTHING inside booking area */
+body.dark-mode .booking-section * {
+    background-color: transparent !important;
+}
+
+/* FORCE ONLY THE PANEL BACKGROUND */
+body.dark-mode .select-service,
+body.dark-mode .service-panel,
+body.dark-mode .service-list,
+body.dark-mode .booking-card .select-service,
+body.dark-mode .booking-step .select-service {
+    background: #0f172a !important;
+    border: 1px solid #1f2a44 !important;
+}
+
+/* FORCE BOOTSTRAP OVERRIDES */
+body.dark-mode .bg-white,
+body.dark-mode .bg-light {
+    background: #0f172a !important;
+}
+
+/* FORCE CARD BODIES (VERY IMPORTANT) */
+body.dark-mode .card-body {
+    background: #0f172a !important;
+}
+
+/* TEXT FIX INSIDE PANEL */
+body.dark-mode .select-service *,
+body.dark-mode .service-panel * {
+    color: #e6f0ff !important;
+}
+
+body.dark-mode .bg-theme {
+    background: #111c33 !important;
+}
+
+body:not(.dark-mode) .bg-theme {
+    background: #f8fafc;
+}
+
+/* =========================================
+   🌙 OFFCANVAS (SELECT SERVICE PANEL) DARK FIX
+========================================= */
+
+body.dark-mode .offcanvas {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+/* header */
+body.dark-mode .offcanvas-header {
+    border-bottom: 1px solid #1f2a44 !important;
+}
+
+/* body */
+body.dark-mode .offcanvas-body {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+/* FORCE ALL bg-light BLOCKS */
+body.dark-mode .offcanvas .bg-light {
+    background: #111c33 !important;
+    color: #e6f0ff !important;
+}
+
+/* bordered cards inside panel */
+body.dark-mode .offcanvas .border {
+    border-color: #1f2a44 !important;
+}
+
+/* text inside */
+
+
+/* icons */
+body.dark-mode .offcanvas i {
+    color: #60a5fa !important;
+}
+
+
+/* =========================================
+   FINAL OFFCANVAS DARK MODE OVERRIDE
+   (Bootstrap-proof)
+========================================= */
+
+
+/* FORCE ANY BOOTSTRAP LIGHT BLOCKS */
+
+/* =========================================
+   🌙 SAFE DARK MODE SYSTEM (NO HERO DAMAGE)
+========================================= */
+
+body.dark-mode {
+    background: #0b1220;
+    color: #e6f0ff;
+}
+
+/* ONLY CARDS (NOT HERO) */
+body.dark-mode .card,
+body.dark-mode .booking-card,
+body.dark-mode .settings-card,
+body.dark-mode .modern-card,
+body.dark-mode .reminder-card,
+body.dark-mode .service-card {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+    border: 1px solid #1f2a44;
+}
+
+/* TABLES ONLY */
+body.dark-mode .table tbody tr {
+    background: #0f172a !important;
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+    color: #e6f0ff !important;
+    border-color: #1f2a44;
+}
+
+body.dark-mode .table thead {
+    background: #111c33;
+}
+
+/* BOOKING PANEL ONLY */
+body.dark-mode .booking-section .select-service,
+body.dark-mode .offcanvas {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+/* INCLUDED BOX */
+body.dark-mode .included-box {
+    background: #111c33 !important;
+    color: #e6f0ff !important;
+}
+
+/* STEP 2 TIME BUTTONS */
+body.dark-mode .time-filter,
+body.dark-mode .time-btn {
+    background: #111c33;
+    color: #e6f0ff;
+    border: 1px solid #1f2a44;
+}
+
+body.dark-mode .time-filter.active,
+body.dark-mode .time-btn.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* ICON FIX */
+body.dark-mode i,
+body.dark-mode .bi {
+    color: #93c5fd;
+}
+
+/* =========================================
+   🌙 STEP 1 SELECT SERVICE PANEL - EMERGENCY FIX
+========================================= */
+
+/* Target the specific container for Step 1 */
+body.dark-mode #step1 .bg-white,
+body.dark-mode #step1 .bg-light,
+body.dark-mode .select-service,
+body.dark-mode .service-selection-container {
+    background-color: #0f172a !important;
+    border-color: #1f2a44 !important;
+}
+
+/* Target the clickable service items/cards specifically */
+body.dark-mode .service-item, 
+body.dark-mode .selectable-card,
+body.dark-mode .service-option {
+    background-color: #111c33 !important;
+    border: 1px solid #1f2a44 !important;
+    color: #e6f0ff !important;
+}
+
+/* Fix text colors for titles and descriptions inside that panel */
+body.dark-mode #step1 h4,
+body.dark-mode #step1 h5,
+body.dark-mode #step1 h6,
+body.dark-mode #step1 p,
+body.dark-mode #step1 span {
+    color: #e6f0ff !important;
+}
+
+/* If you are using a Bootstrap List Group for services */
+body.dark-mode .list-group-item {
+    background-color: #0f172a !important;
+    color: #e6f0ff !important;
+    border-color: #1f2a44 !important;
+}
+
+/* =========================================
+   🌙 THE TOTAL DARK MODE OVERRIDE
+========================================= */
+
+/* 1. Target the Outer Frame & Header shown in your image */
+body.dark-mode .select-service,
+body.dark-mode .service-selection-container,
+body.dark-mode .card-header,
+body.dark-mode .modal-header,
+body.dark-mode #step1 .bg-white {
+    background-color: #0f172a !important;
+    border-color: #1f2a44 !important;
+}
+
+/* 2. Fix the "Select Service" title color */
+body.dark-mode .select-service h3,
+body.dark-mode .select-service h4,
+body.dark-mode .select-service .text-primary {
+    color: #e6f0ff !important;
+}
+
+/* 3. Remove the white border/padding around the service list */
+body.dark-mode .p-3, 
+body.dark-mode .p-4,
+body.dark-mode .card-body {
+    background-color: #0f172a !important;
+}
+
+/* 4. Ensure the very bottom "rounded corners" stay dark */
+body.dark-mode .rounded,
+body.dark-mode .rounded-3,
+body.dark-mode .shadow-sm {
+    background-color: #0f172a !important;
+    box-shadow: none !important;
+}
+/* =========================================
+   🌙 THE FINAL "WHITE GAP" KILLER 
+========================================= */
+
+/* 1. Target the actual modal/offcanvas body padding */
+body.dark-mode .offcanvas-body,
+body.dark-mode .modal-body,
+body.dark-mode .select-service-container {
+    background-color: #0f172a !important;
+    padding: 0 !important; /* Removes the white "frame" around the list */
+}
+
+/* 2. Target the space BETWEEN the header and the list */
+body.dark-mode .offcanvas-header,
+body.dark-mode .modal-header {
+    background-color: #0f172a !important;
+    border-bottom: 1px solid #1f2a44 !important;
+    margin-bottom: 0 !important;
+}
+
+/* 3. The "Nuclear" fix for any hidden Bootstrap containers */
+body.dark-mode .container,
+body.dark-mode .container-fluid,
+body.dark-mode .row,
+body.dark-mode .col-12 {
+    background-color: transparent !important;
+}
+
+/* 4. Fix that thin white line at the very bottom */
+body.dark-mode .offcanvas,
+body.dark-mode .modal-content {
+    border: 1px solid #1f2a44 !important;
+    background-color: #0f172a !important;
+}
+
+/* =========================================
+   FIX FOR INVISIBLE TEXT (REMINDERS & TIPS)
+========================================= */
+
+/* 1. Fix the "More Tips >" link and other blue links */
+body.dark-mode .card a, 
+body.dark-mode .text-primary,
+body.dark-mode a.text-primary {
+    color: #60a5fa !important; /* Brighter, glowing blue for links */
+    font-weight: 600;
+}
+
+/* 2. Fix the faded list items in Reminders */
+body.dark-mode .reminder-card li,
+body.dark-mode .reminder-card p,
+body.dark-mode .card-body p {
+    color: #e6f0ff !important; /* Force to bright white-blue */
+    opacity: 1 !important;
+}
+
+/* 3. Fix the "Schedule regular dental..." text in Oral Health Tips */
+body.dark-mode .tip-card p,
+body.dark-mode .oral-health-card p,
+body.dark-mode .card p {
+    color: #ffffff !important; /* Pure white for maximum contrast on dark navy */
+}
+
+/* 4. Fix any muted/gray text that is currently too dark */
+body.dark-mode .text-muted,
+body.dark-mode small {
+    color: #94a3b8 !important; /* Lighter slate gray that is actually visible */
+}
+
+/* 5. Fix the Reminder bullet point visibility */
+body.dark-mode ul li::marker {
+    color: #3b82f6 !important;
+}
+
+/* =========================================
+   FIX FOR INVISIBLE TEXT IN ORAL HEALTH TIPS
+========================================= */
+
+/* Targeted fix for the paragraph inside the Tip Card */
+body.dark-mode .oral-health-card p,
+body.dark-mode .tip-card p,
+body.dark-mode .modern-card p {
+    color: #0f172a !important; /* Deep navy color for maximum contrast on the light graphic */
+    font-weight: 500; /* Makes the text slightly thicker to read easier */
+    text-shadow: none !important; /* Removes any white glow that might blur it */
+}
+
+/* Fix for the title of the tip if it's also inside the light area */
+body.dark-mode .tip-card h5 {
+    color: #0f172a !important;
+}
+
+/* =========================================
+   🌙 REMINDER BADGE ICON FIX
+========================================= */
+
+/* Force the play icon and the count to be dark/visible against the white background */
+/* =========================================
+   🌙 REMINDER BADGE TEXT FIX (FINAL)
+========================================= */
+
+body.dark-mode .reminder-card i.bi-bell-fill {
+    color: #0d6efd !important; /* Stronger Bootstrap Blue */
+}
+/* =========================================
+   🌙 REMINDER BADGE NUMBER VISIBILITY FIX
+========================================= */
+
+/* =========================================
+   🌙 REMINDER BADGE "3" VISIBILITY FIX
+========================================= */
+
+/* Targets the span inside the reminder-count specifically */
+body.dark-mode .reminder-card .reminder-count span {
+    color: #0f172a !important; /* Deep Navy to stand out on the white badge */
+    font-weight: 800 !important; /* Bold enough to read */
+    position: relative;
+    z-index: 5;
+    opacity: 1 !important;
+}
+
+/* Ensures the play icon next to it is also visible */
+body.dark-mode .reminder-card .reminder-count i.bi-play-fill {
+    color: #0d6efd !important; /* Strong blue */
+    opacity: 1 !important;
+}
+
+/* Extra safety: ensures the background of that badge stays white */
+body.dark-mode .reminder-card .reminder-count {
+    background-color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* =========================================
+   🌙 ORAL HEALTH TIPS BULB FIX
+========================================= */
+
+/* Use body.dark-mode to ensure it only applies in Dark Mode */
+/* =========================================
+   💡 ORAL HEALTH TIPS BULB FIX (STRICT)
+========================================= */
+
+/* Targeting the SVG path directly to force the fill color */
+/* LIGHT MODE (Default) */
+.bi-lightbulb-fill {
+    color: #ffc107; /* Standard Bootstrap warning gold */
+    transition: all 0.3s ease;
+}
+
+/* DARK MODE */
+body.dark-mode .bi-lightbulb-fill {
+    color: #ffeb3b !important; /* Brighter, "lit up" yellow */
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 8px rgba(255, 235, 59, 0.7)); /* The glow effect */
+}
+
+.your-button-class:focus, 
+.your-button-class:active,
+.your-button-class.active {
+    color: #ffc107 !important; /* Example Yellow */
+    background-color: transparent;
+    border-color: #ffc107;
+}
+
+/* =========================================
+   💡 THE "LIGHTBULB" SPECIFIC FIX
+   This overrides the general blue icon fix
+========================================= */
+body.dark-mode i.bi-lightbulb-fill, 
+body.dark-mode .bi-lightbulb {
+    color: #ffc107 !important; /* Forces the Yellow back */
+    filter: drop-shadow(0 0 8px rgba(255, 193, 7, 0.5)); /* Adds a subtle glow */
+    opacity: 1 !important;
+}
+
+/* =========================================
+   🚀 ULTIMATE PERFORMANCE OVERRIDE
+========================================= */
+
+/* 1. Force the GPU to handle the transition */
+.time-filter, 
+.time-btn, 
+.card, 
+body.dark-mode {
+    transform: translateZ(0); /* Triggers Hardware Acceleration */
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 2. Simplify the transition properties */
+/* Transitioning 'all' is heavy. Only transition the specific changes. */
+.time-filter {
+    transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), 
+                border-color 0.15s ease !important;
+    will-change: background-color; 
+}
+
+/* 3. The "Secret Weapon": Instant Active State */
+/* Lag often feels like the button is "stuck" before changing. 
+   Removing the transition on the active class makes it feel instant. */
+body.dark-mode .time-filter.active {
+    transition: background-color 0.2s ease; 
+    background-color: #2563eb !important;
+    transform: scale(1.02); /* Slight scale up makes it feel responsive */
+}
+
+/* 4. Shadow Optimization */
+/* Heavy box-shadows are the #1 cause of lag in Dark Mode. 
+   We swap them for a simple border during the transition. */
+body.dark-mode .card, 
+body.dark-mode .time-filter {
+    box-shadow: none !important;
+    border: 1px solid #1f2a44 !important;
+}
+/* =========================================
+   🌙 PAYMENT METHOD READABILITY FIX
+========================================= */
+
+/* =========================================
+   🌙 PAYMENT METHOD - FINAL TEXT COLOR FIX
+========================================= */
+
+/* Use 'body.dark-mode' + the card class + the tag to force the color */
+body.dark-mode .payment-card h5,
+body.dark-mode .payment-card p,
+body.dark-mode .payment-card span,
+body.dark-mode .payment-card small {
+    color: #ffffff !important; /* Pure white for unselected text */
+    opacity: 0.7; /* Slightly faded so the blue one still looks 'active' */
+}
+
+/* Selected/Active state - Full Brightness */
+body.dark-mode .payment-card.active h5,
+body.dark-mode .payment-card.active p,
+body.dark-mode .payment-card.active span {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    font-weight: 700;
+}
+
+/* Icon visibility safety net */
+body.dark-mode .payment-card img,
+body.dark-mode .payment-card i {
+    filter: brightness(1.2); /* Makes the icons pop more against the dark navy */
+}
+
+
+/* =========================================
+   📅 DARK MODE: CALENDAR TEXT VISIBILITY
+   (Fixes invisible text on the white banner pill)
+========================================= */
+
+/* Target the text and date specifically inside that white pill */
+body.dark-mode .calendar-card span,
+body.dark-mode .calendar-card .current-date,
+body.dark-mode .calendar-card p {
+    color: #0f172a !important; /* Deep Navy for contrast on white */
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+/* Ensure the icon also stays a strong blue/navy */
+body.dark-mode .calendar-card i,
+body.dark-mode .calendar-card .bi-calendar-event {
+    color: #3b82f6 !important; /* Professional Blue */
+    opacity: 1 !important;
+}
+/* =========================================
+   🛡️ ANTI-FLICKER THEME ENGINE
+========================================= */
+
+/* 1. The "Steady Frame" - Lock layout properties so they don't move */
+body,
+.card,
+.main-header,
+.payment-card,
+.time-filter,
+.settings-card,
+.modern-card,
+.booking-card,
+.reminder-card,
+.service-card,
+.stat-item {
+    transition:
+        background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.35s ease,
+        border-color 0.4s ease;
+}
+
+/* 2. Kill the "Box-Shadow Flicker" */
+/* Shadows are the #1 cause of flickering because they require massive re-paints */
+body.dark-mode .card, 
+body.dark-mode .payment-card,
+body.dark-mode .time-filter {
+    box-shadow: none !important;
+    /* If you need a glow, use a border instead of a shadow */
+    border: 1px solid #1f2a44 !important;
+}
+
+/* 3. The "Instant Text" fix */
+/* Flickering often happens when text stays black for 10ms too long. 
+   We make the text transition slightly faster than the background. */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, 
+body.dark-mode p, body.dark-mode span, body.dark-mode .payment-card h5 {
+    transition: color 0.15s ease-out !important;
+    color: #ffffff !important;
+}
+
+/* =========================================
+   📅 DARK MODE: BANNER CALENDAR TEXT FIX
+========================================= */
+
+/* =========================================
+   📅 HERO CALENDAR VISIBILITY FIX
+========================================= */
+
+/* Force the text inside the white hero pill to stay dark in Dark Mode */
+body.dark-mode .hero-date-container .date-label,
+body.dark-mode .hero-date-container .date-value {
+    color: #0f172a !important; /* Deep Navy */
+    opacity: 1 !important;
+}
+
+/* Ensure the calendar icon also stays visible */
+body.dark-mode .hero-date-container i {
+    color: #4e73df !important; /* Matching your Blue Theme */
+    opacity: 1 !important;
+}
+
+/* Optional: If the pill itself is disappearing, this keeps it white */
+body.dark-mode .hero-date-container {
+    background: white !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+}
+
+/* Ensure the guide panel is hidden by default and off-screen */
+#dental-guide-panel {
+    display: none; /* Or use transform: translateX(100%) if it's an off-canvas */
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1050;
+}
+
+/* Hide horizontal overflow to prevent the "scrolled to the right" glitch */
+body {
+    overflow-x: hidden;
+}
+
+/* =========================================
+   🌙 DARK MODE MODAL FIX
+========================================= */
+
+/* Use 'body.dark-mode' to ensure this only affects Dark Mode */
+body.dark-mode .service-modal, 
+body.dark-mode .modal-overlay {
+    /* Use 'rgba' with a lower '0.5' for visibility */
+    background-color: rgba(11, 18, 32, 0.5) !important; 
+    
+    /* The blur effect */
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Ensure the message boxes inside stay solid and readable */
+body.dark-mode .gmd-modal-content, 
+body.dark-mode .modal-content {
+    background-color: #0f172a !important; /* Solid navy background */
+    border: 1px solid #1f2a44 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* =========================================
+   🌙 DENTAL CARE GUIDE - DARK MODE FIX
+========================================= */
+
+/* Ensure the panel itself stays dark navy */
+body.dark-mode #dental-guide-panel,
+body.dark-mode .offcanvas {
+    background-color: #0f172a !important;
+}
+
+/* Match the tip card background to the original style */
+body.dark-mode .tip-card {
+    background-color: #111c33 !important; /* Slightly lighter navy for contrast */
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Force text visibility for headers and descriptions */
+body.dark-mode .tip-card h6 {
+    color: #e6f0ff !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+body.dark-mode .tip-card p {
+    color: #94a3b8 !important; /* Muted blue-grey for readability */
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* Section titles (POST-PROCEDURE CARE, etc.) */
+body.dark-mode .section-title {
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.offcanvas-body {
+    overflow-x: hidden !important; /* Prevents that horizontal bar */
+    overflow-y: auto;             /* Keeps the vertical scrolling */
+}
+
+/* =========================================
+   ☀️ PURE LIGHT MODE (Force Restored)
+========================================= */
+body:not(.dark-mode) .offcanvas,
+body:not(.dark-mode) .offcanvas-body {
+    background-color: #ffffff !important;
+}
+
+/* Force the Card Container */
+body:not(.dark-mode) .tip-item {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left-width: 4px !important; /* Keep the highlight thick */
+}
+
+/* Force the Header Text (Small) */
+body:not(.dark-mode) .tip-item span.fw-bold,
+body:not(.dark-mode) .tip-item .small {
+    color: #0f172a !important; /* Deep Navy/Black */
+}
+
+/* Force the Body Text (Extra Small) */
+body:not(.dark-mode) .tip-item p,
+body:not(.dark-mode) .tip-item .extra-small,
+body:not(.dark-mode) .tip-item .text-muted {
+    color: #475569 !important; /* Clear Slate Grey */
+}
+
+/* =========================================
+   🌙 PURE DARK MODE (Force Styled)
+========================================= */
+body.dark-mode .offcanvas,
+body.dark-mode .offcanvas-body {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .tip-item {
+    background-color: #1e293b !important; /* Darker Navy */
+    border: 1px solid #334155 !important;
+    border-left-width: 4px !important;
+}
+
+body.dark-mode .tip-item span.fw-bold,
+body.dark-mode .tip-item .small {
+    color: #f8fafc !important; /* Pure White/Off-white */
+}
+
+body.dark-mode .tip-item p,
+body.dark-mode .tip-item .extra-small,
+body.dark-mode .tip-item .text-muted {
+    color: #94a3b8 !important; /* Soft Blue-Grey */
+}
+
+/* =========================================
+   🎨 HIGHLIGHT BORDER COLORS (Universal)
+========================================= */
+.tip-item.border-primary { border-left-color: #0d6efd !important; }
+.tip-item.border-success { border-left-color: #198754 !important; }
+.tip-item.border-warning { border-left-color: #ffc107 !important; }
+
+
+/* =========================================
+   🎨 FINAL HIGHLIGHT RESTORATION
+   (Place this at the absolute bottom)
+========================================= */
+
+/* 1. Ensure the left border is always thick */
+.tip-item {
+    border-left-width: 4px !important;
+    border-left-style: solid !important;
+}
+
+/* 2. Force the colors regardless of theme */
+/* Using 'body' prefix to beat the theme resets */
+body .tip-item.border-primary { 
+    border-left-color: #0d6efd !important; 
+}
+body .tip-item.border-success { 
+    border-left-color: #198754 !important; 
+}
+body .tip-item.border-warning { 
+    border-left-color: #ffc107 !important; 
+}
+
+/* 3. Cleanup Light Mode Borders */
+/* This ensures the other 3 sides stay subtle while the left stays colored */
+body:not(.dark-mode) .tip-item {
+    border-top-color: #e2e8f0 !important;
+    border-right-color: #e2e8f0 !important;
+    border-bottom-color: #e2e8f0 !important;
+}
+
+/* 4. Fix the Scroll Issue */
+/* Prevents the background from moving when you scroll the tips */
+body.offcanvas-open {
+    overflow: hidden !important;
+}
+/* --- 1. LIGHT MODE VISIBILITY (CLINIC BLUE THEME) --- */
+
+body:not(.dark-mode) #serviceDetailsPanel {
+    background-color: #ffffff !important;
+}
+
+/* Titles: Professional Clinic Blue */
+body:not(.dark-mode) #serviceDetailsPanel h2,
+body:not(.dark-mode) #serviceDetailsPanel h5,
+body:not(.dark-mode) #serviceDetailsPanel .service-title {
+    color: #0d6efd !important; /* Your primary brand blue */
+    opacity: 1 !important;
+}
+
+/* Body text: Dark Blue-Gray (Readable but not pure black) */
+body:not(.dark-mode) #serviceDetailsPanel p,
+body:not(.dark-mode) #serviceDetailsPanel .included-item,
+body:not(.dark-mode) #serviceDetailsPanel span:not(.btn-gradient-text) {
+    color: #2c3e50 !important; 
+    opacity: 1 !important;
+}
+
+/* Subtext/Labels (Investment/Duration labels) */
+body:not(.dark-mode) #serviceDetailsPanel .text-muted,
+body:not(.dark-mode) #serviceDetailsPanel small {
+    color: #5d7084 !important;
+    opacity: 1 !important;
+}
+
+/* Investment/Duration Box backgrounds */
+body:not(.dark-mode) #serviceDetailsPanel .bg-theme {
+    background-color: #f8faff !important; /* Extremely light blue tint */
+    border: 1px solid #e1e8f0 !important;
+}
+
+/* --- 2. DARK MODE ALIGNMENT (KEEPING YOUR WORKING CODE) --- */
+#serviceDetailsPanel .offcanvas-body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 24px !important;
+    width: 100% !important;
+}
+
+#serviceDetailsPanel .row,
+#serviceDetailsPanel .bg-theme,
+#serviceDetailsPanel .btn-gradient {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+/* --- FINAL HEADER TEXT & BORDER FIX --- */
+
+/* Targets the 'Service Details' text specifically in Light Mode */
+body:not(.dark-mode) #serviceDetailsPanel .offcanvas-header h5 {
+    color: #0d6efd !important; /* Branded Clinic Blue */
+    opacity: 1 !important;
+    font-weight: 700 !important;
+}
+
+/* Ensures the bottom border is visible in Light Mode */
+body:not(.dark-mode) #serviceDetailsPanel .offcanvas-header.border-bottom {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* Makes the 'X' close button dark and visible */
+body:not(.dark-mode) #serviceDetailsPanel .btn-close {
+    filter: brightness(0) !important; /* Forces the white 'X' to turn black/dark */
+    opacity: 0.8 !important;
+}
+/* --- OVERVIEW HEADER LIGHT MODE FIX --- */
+
+/* 1. Force the Header background to White and the Border to visible gray */
+body:not(.dark-mode) #serviceDetailsPanel .offcanvas-header {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* 2. Force the Header Title (h5) to Branded Blue and 100% Opacity */
+body:not(.dark-mode) #serviceDetailsPanel .offcanvas-header h5 {
+    color: #0d6efd !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* 3. Force the Body background to White (Just in case it's still dark) */
+body:not(.dark-mode) #serviceDetailsPanel .offcanvas-body {
+    background-color: #ffffff !important;
+}
+
+/* 4. Fix the 'X' Close Button visibility */
+body:not(.dark-mode) #serviceDetailsPanel .btn-close {
+    filter: brightness(0) !important; /* Turns white 'X' into black/dark */
+    opacity: 1 !important;
+}
+/* --- CHECK ICON VISIBILITY FIX --- */
+
+/* Forces the check icons to be a solid, vibrant blue in Light Mode */
+body:not(.dark-mode) #serviceDetailsPanel .bi-check-circle-fill, 
+body:not(.dark-mode) #serviceDetailsPanel .included-item i,
+body:not(.dark-mode) #serviceDetailsPanel i.fa-check-circle {
+    color: #0d6efd !important; /* Branded Blue */
+    opacity: 1 !important;      /* Removes the "ghostly" transparency */
+    -webkit-text-stroke: 0.5px #0d6efd; /* Optional: adds a tiny bit of weight */
+}
+
+/* If you are using SVG icons, this ensures the fill is solid */
+body:not(.dark-mode) #serviceDetailsPanel svg {
+    fill: #0d6efd !important;
+    opacity: 1 !important;
+}
+/* --- NOTIFICATION PANEL (DARK) CLOSE BUTTON --- */
+
+/* Targets ONLY the custom close button in your notification panel */
+.notif-panel .notif-close {
+    color: #ffffff !important;       /* Forces the 'X' to be pure white */
+    opacity: 0.8 !important;         /* Makes it clear but not distracting */
+    background: transparent !important;
+    border: none !important;
+    font-size: 1.8rem !important;    /* Makes it slightly larger for better UX */
+    line-height: 0.5 !important;     /* Centers the &times; symbol vertically */
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+/* Hover state for better feedback */
+.notif-panel .notif-close:hover {
+    opacity: 1 !important;
+    color: #df3b3b !important;
+}
+
+/* This only activates if the body has the .dark-mode class */
+body.dark-mode .toast {
+    background-color: #1a2235 !important; /* Your Bluish Dark color */
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Make sure the text inside the dark toast is visible */
+body.dark-mode .toast-body {
+    color: #ffffff !important;
+}
+
+/* Fix the close button for dark mode only */
+body.dark-mode .toast .btn-close {
+    filter: invert(1) brightness(200%);
+}
+
+/* Fixes the Tips Panel in place so it doesn't move when Offcanvas opens */
+#tipsPanel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100vh;
+    background: #0b1426;
+    z-index: 1040;
+
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    visibility: visible;
+}
+
+#tipsPanel.active {
+    transform: translateX(0);
+}
+
+/* Only show it when this specific class is added */
+#tipsPanel.show-panel {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+/* Force Modals to stay on top of Offcanvas and Side Panels */
+
+.offcanvas {
+    z-index: 1045 !important; /* Just below the modal backdrop */
+}
+
+/* 3. THE FIX: Force the Rescheduale Modal to the VERY front */
+.modal {
+    z-index: 2000 !important;
+}
+
+.modal-backdrop {
+    z-index: 1990 !important; /* Backdrop stays just behind the modal */
+}
+
+/* Force solid background for the Side Panel */
+.side-panel {
+    background-color: #ffffff !important; /* Force solid white in light mode */
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15); /* Stronger shadow to separate from page */
+}
+
+/* Force solid background for the Header */
+.side-panel .panel-header {
+    background-color: #ffffff !important;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Ensure the body area is also solid */
+.side-panel .panel-body {
+    background-color: #ffffff !important;
+}
+
+/* Dark Mode Overrides (If you use a .dark-mode class or [data-theme='dark']) */
+[data-theme='dark'] .side-panel,
+[data-theme='dark'] .side-panel .panel-header,
+[data-theme='dark'] .side-panel .panel-body {
+    background-color: #162238 !important;
+    color: #ffffff;
+}
+
+[data-theme='dark'] .side-panel .panel-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* FORCE LIGHT MODE ON SERVICE DETAILS */
+/* --- THEME-AWARE SERVICE PANEL --- */
+
+/* 1. Default State (Light Mode) */
+/* LIGHT MODE (Default) */
+#serviceDetailsPanel.offcanvas {
+    background-color: #ffffff !important;
+    color: #111 !important;
+}
+
+#serviceDetailsPanel .offcanvas-body,
+#serviceDetailsPanel .offcanvas-header,
+#serviceDetailsPanel h1,
+#serviceDetailsPanel h2,
+#serviceDetailsPanel h3,
+#serviceDetailsPanel h4,
+#serviceDetailsPanel h5,
+#serviceDetailsPanel p,
+#serviceDetailsPanel small,
+#serviceDetailsPanel span,
+#serviceDetailsPanel li {
+    color: #111 !important;
+}
+#serviceDetailsPanel .offcanvas-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#serviceDetailsPanel .bg-theme {
+    background-color: #f8f9fa !important;
+    color: #111 !important;
+}
+#serviceDetailsPanel i {
+    color: #0d6efd !important;
+}
+#serviceDetailsPanel ul li {
+    color: #111 !important;
+}
+
+body.dark-mode #serviceDetailsPanel {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+
+body:not(.dark-mode) #serviceDetailsPanel {
+    background: #ffffff !important;
+    color: #111 !important;
+}
+
+body:not(.dark-mode) #serviceDetailsPanel * {
+    color: #111 !important;
+}
+#serviceDetailsPanel .bg-theme {
+    background: #f8f9fa !important;
+}
+
+/* 🔥 FINAL SERVICE DETAILS PANEL FIX */
+body.dark-mode #serviceDetailsPanel.offcanvas {
+    background-color: #0f172a !important;
+}
+
+/* Remove any leftover light padding/frame */
+body.dark-mode #serviceDetailsPanel .offcanvas-body {
+    background-color: #0f172a !important;
+}
+
+/* Fix the outer container (the "white frame" look) */
+body.dark-mode #serviceDetailsPanel .container,
+body.dark-mode #serviceDetailsPanel .container-fluid,
+body.dark-mode #serviceDetailsPanel .row {
+    background: transparent !important;
+}
+
+/* =========================================
+   APPOINTMENT PANEL FINAL FIX
+   Fixes:
+   - dark Safety Measures box
+   - faded Root Canal title
+   - unreadable schedule text
+========================================= */
+
+body.dark-mode #appointmentPanel {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+body.dark-mode #appointmentPanel .offcanvas-header,
+body.dark-mode #appointmentPanel .offcanvas-body {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+/* title + close button */
+body.dark-mode #appointmentPanel .offcanvas-title {
+    color: #2563eb !important;
+}
+
+body.dark-mode #appointmentPanel .btn-close {
+    filter: brightness(0) !important;
+    opacity: 1 !important;
+}
+
+/* main heading + schedule */
+body.dark-mode #appointmentPanel .appointment-header h3 {
+    color: #0f172a !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode #appointmentPanel .appointment-header p,
+body.dark-mode #appointmentPanel .appointment-header .text-secondary,
+body.dark-mode #appointmentPanel .appointment-header .small {
+    color: #475569 !important;
+    opacity: 1 !important;
+}
+
+/* confirmed badge */
+body.dark-mode #appointmentPanel .badge {
+    background: #dbeafe !important;
+    color: #2563eb !important;
+}
+
+/* SAFETY MEASURES BOX */
+body.dark-mode #appointmentPanel .rounded-3,
+body.dark-mode #appointmentPanel div[style*="background-color: #1b263b"] {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+/* text inside safety box */
+body.dark-mode #appointmentPanel .rounded-3 h6,
+body.dark-mode #appointmentPanel .rounded-3 li,
+body.dark-mode #appointmentPanel .rounded-3 span,
+body.dark-mode #appointmentPanel .rounded-3 p {
+    color: #111827 !important;
+}
+
+/* icons inside safety box */
+body.dark-mode #appointmentPanel .rounded-3 i {
+    color: #2563eb !important;
+}
+
+/* =========================================
+   APPOINTMENT PANEL — DARK MODE
+========================================= */
+
+body.dark-mode #appointmentPanel {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+body.dark-mode #appointmentPanel .offcanvas-header,
+body.dark-mode #appointmentPanel .offcanvas-body {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+body.dark-mode #appointmentPanel .offcanvas-title {
+    color: #60a5fa !important;
+}
+
+body.dark-mode #appointmentPanel .btn-close {
+    filter: invert(1) brightness(200%) !important;
+    opacity: 1 !important;
+}
+
+/* confirmed badge */
+body.dark-mode #appointmentPanel .badge {
+    background: rgba(96, 165, 250, 0.18) !important;
+    color: #93c5fd !important;
+    border: 1px solid rgba(96, 165, 250, 0.25) !important;
+}
+
+/* title + schedule */
+body.dark-mode #appointmentPanel .appointment-header h3 {
+    color: #f8fafc !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode #appointmentPanel .appointment-header p,
+body.dark-mode #appointmentPanel .appointment-header .text-secondary,
+body.dark-mode #appointmentPanel .appointment-header .small {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+/* safety box */
+body.dark-mode #appointmentPanel .rounded-3 {
+    background: #111c33 !important;
+    border: 1px solid #1f2a44 !important;
+}
+
+body.dark-mode #appointmentPanel .rounded-3 h6 {
+    color: #93c5fd !important;
+}
+
+body.dark-mode #appointmentPanel .rounded-3 li,
+body.dark-mode #appointmentPanel .rounded-3 span,
+body.dark-mode #appointmentPanel .rounded-3 p {
+    color: #e6f0ff !important;
+}
+
+body.dark-mode #appointmentPanel .rounded-3 i {
+    color: #60a5fa !important;
+}
+
+/* reschedule button */
+body.dark-mode #appointmentPanel .btn-outline-secondary {
+    color: #e6f0ff !important;
+    border-color: #334155 !important;
+    background: transparent !important;
+}
+
+body.dark-mode #appointmentPanel .btn-outline-secondary:hover {
+    background: #1e293b !important;
+    color: #ffffff !important;
+}
+
+/* ===== VIEW OVERVIEW DARK MODE (MINIMAL FIX) ===== */
+
+body.dark-mode #serviceDetailsPanel {
+    background: #0f172a !important;
+    color: #e6f0ff !important;
+}
+
+body.dark-mode #serviceDetailsPanel .offcanvas-header,
+body.dark-mode #serviceDetailsPanel .offcanvas-body {
+    background: #0f172a !important;
+}
+
+/* cards (investment + duration) */
+body.dark-mode #serviceDetailsPanel .bg-theme {
+    background: #111c33 !important;
+    border: 1px solid #1f2a44 !important;
+    color: #e6f0ff !important;
+}
+
+/* text fix */
+body.dark-mode #serviceDetailsPanel h2,
+body.dark-mode #serviceDetailsPanel p,
+body.dark-mode #serviceDetailsPanel small {
+    color: #e6f0ff !important;
+}
+
+/* icons */
+body.dark-mode #serviceDetailsPanel i {
+    color: #60a5fa !important;
+}
+/* fix "What's Included" text */
+body.dark-mode #serviceDetailsPanel #panelIncludes li,
+body.dark-mode #serviceDetailsPanel #panelIncludes span {
+    color: #e6f0ff !important;
+}
+/* make ₱300 and 15 mins blue in dark mode */
+body.dark-mode #serviceDetailsPanel .bg-theme h5 {
+    color: #3b82f6 !important;
+}
+body.dark-mode #serviceDetailsPanel h5{
+    color: #3b82f6 !important;
+}
+/* make service title blue in dark mode */
+body.dark-mode #serviceDetailsPanel #panelTitle {
+    color: #3b82f6 !important;
+}
+/* fix left/right spacing for View Details panel */
+body.dark-mode #appointmentPanel .offcanvas-body,
+body.dark-mode #serviceDetailsPanel .offcanvas-body {
+    padding: 24px !important;
+}
+
+/* keep header spacing clean too */
+body.dark-mode #appointmentPanel .offcanvas-header,
+body.dark-mode #serviceDetailsPanel .offcanvas-header {
+    padding: 20px 24px !important;
+}
+
+/* settings section final fix */
+#profile.view.active {
+    display: block !important;
+}
+
+#profile .container-fluid {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 20px !important;
+    padding-bottom: 40px !important;
+}
+
+#profile .d-flex.mb-4 {
+    margin-bottom: 16px !important;
+}
+
+#profile .text-center.mb-5 {
+    margin-bottom: 20px !important;
+}
+
+#profile img {
+    width: 120px !important;
+    height: 120px !important;
+}
+
+#profile .row.g-4 {
+    margin-top: 10px !important;
+    gap: 16px !important;
+}
+
+#profile .card {
+    padding: 20px !important;
+    border-radius: 12px;
+}
+
+#profile h2 {
+    font-size: 1.8rem !important;
+}
+
+#profile h3 {
+    font-size: 1.4rem !important;
+}
+
+#profile h5 {
+    font-size: 1.05rem !important;
+}
+
+#profile .form-label {
+    font-size: 0.8rem !important;
+}
+
+#profile .form-control {
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+}
+
+#profile .text-center.mt-5 {
+    margin-top: 30px !important;
+}
+
+#profile .btn-lg {
+    padding: 10px 24px !important;
+    font-size: 0.95rem !important;
+}
+
+/* ===== FIX HEADER FULL WIDTH ===== */
+
+/* remove inner padding causing white edges */
+#rescheduleModal .modal-content {
+    padding: 0 !important;
+    overflow: hidden; /* keeps rounded corners clean */
+}
+
+/* make header stretch FULL width */
+#rescheduleModal .reschedule-modal-header {
+    width: 100%;
+    margin: 0;
+    padding: 18px 20px; /* control spacing manually */
+    
+    background: #4e73df !important;
+    color: #fff !important;
+
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+/* body spacing (so content doesn't stick) */
+#rescheduleModal .reschedule-modal-body {
+    padding: 20px !important;
+}
+
+/* footer spacing */
+#rescheduleModal .modal-footer {
+    padding: 16px 20px !important;
+}
+/* FORCE WHITE CLOSE BUTTON */
+/* CLOSE BUTTON HOVER (RED EFFECT) */
+#rescheduleModal .btn-close {
+    filter: invert(1) brightness(200%) !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease;
+}
+
+#rescheduleModal .btn-close:hover {
+    filter: invert(21%) sepia(91%) saturate(7492%) hue-rotate(357deg) brightness(95%) contrast(118%) !important;
+    transform: scale(1.1);
+}
+/* ===== PROFILE DROPDOWN MENU ===== */
+
+.profile-menu-wrapper {
+    position: relative;
+    z-index: 3000;
+}
+
+#profileMenuTrigger {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 3001;
+}
+
+#profileMenuTrigger:hover {
+    transform: translateY(-1px);
+}
+
+.profile-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 220px;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.22s ease;
+    z-index: 4000; /* stronger than hero */
+}
+
+.profile-dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.profile-dropdown-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.profile-dropdown-item:hover {
+    background: #f8fafc;
+    color: #4e73df;
+}
+
+.profile-dropdown-item i {
+    font-size: 1.05rem;
+}
+
+.profile-dropdown-item.logout {
+    color: #ef4444;
+}
+
+.profile-dropdown-item.logout:hover {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+/* DARK MODE */
+body.dark-mode .profile-dropdown-menu {
+    background: #0f172a;
+    border: 1px solid #1f2a44;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
+
+body.dark-mode .profile-dropdown-item {
+    color: #e6f0ff;
+}
+
+body.dark-mode .profile-dropdown-item:hover {
+    background: #111c33;
+    color: #60a5fa;
+}
+
+body.dark-mode .profile-dropdown-item.logout {
+    color: #f87171;
+}
+
+body.dark-mode .profile-dropdown-item.logout:hover {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+.main-header {
+    position: relative;
+    z-index: 2000;
+}
+/* ===== DASHBOARD BOOK BUTTON HOVER ===== */
+
+.dashboard-grid .btn {
+    transition: all 0.25s ease;
+}
+
+/* HOVER */
+.dashboard-grid .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(78, 115, 223, 0.35);
+}
+
+/* CLICK (nice press effect) */
+.dashboard-grid .btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(78, 115, 223, 0.25);
+}
+
+/* ===== SIDE PANELS BELOW HEADER FIX ===== */
+
+/* header height is 65px in your current CSS */
+.notif-panel,
+.side-panel,
+#tipsPanel,
+.offcanvas {
+    top: 65px !important;
+    height: calc(100vh - 65px) !important;
+}
+
+/* keep internal scrolling working */
+.side-panel .panel-body,
+#tipsPanel .panel-body,
+.offcanvas .offcanvas-body {
+    height: 100%;
+    overflow-y: auto;
+}   
+
+
+
+/* =========================================
+   🌙 DARK MODE SERVICE CARD
+   ANIMATED COLORED BORDER ON HOVER
+========================================= */
+
+body.dark-mode .service-card {
+    position: relative;
+    background: #0f172a !important;
+    border: 1px solid #1f2a44 !important;
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+/* glowing animated border layer */
+body.dark-mode .service-card::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+        120deg,
+        #3b82f6,
+        #8b5cf6,
+        #06b6d4,
+        #22c55e,
+        #3b82f6
+    );
+    background-size: 300% 300%;
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    animation: darkServiceBorderFlow 4s linear infinite;
+}
+
+/* inner fill so only the border shows */
+body.dark-mode .service-card::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: calc(20px - 2px);
+    background: #0f172a;
+    z-index: -1;
+}
+
+/* hover effect */
+body.dark-mode .service-card:hover {
+    transform: translateY(-6px);
+    border-color: transparent !important;
+    box-shadow:
+        0 12px 28px rgba(59, 130, 246, 0.18),
+        0 0 18px rgba(139, 92, 246, 0.12);
+}
+
+body.dark-mode .service-card:hover::before {
+    opacity: 1;
+}
+
+/* animated gradient movement */
+@keyframes darkServiceBorderFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+/* ===== FINAL SIDEBAR TOGGLE FIX ===== */
+/* ===== FINAL SIDEBAR ANIMATION RESTORE ===== */
+.sidebar {
+    transition:
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.4s ease !important;
+}
+
+.main-content {
+    transition:
+        margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* When collapsed */
+.app-shell.collapsed .sidebar {
+    width: var(--sidebar-collapsed-width);
+}
+
+.app-shell.collapsed .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+}
+/* =========================
+   STATUS BADGES (PATIENT)
+   ========================= */
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    display: inline-block;
+    min-width: 90px;
+    text-align: center;
+}
+
+/* PENDING */
+.badge.pending {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+/* APPROVED */
+.badge.approved {
+    background: rgba(13, 110, 253, 0.15);
+    color: #0d6efd;
+    border: 1px solid rgba(13, 110, 253, 0.4);
+}
+
+/* UPCOMING */
+.badge.upcoming {
+    background: rgba(0, 123, 255, 0.15);
+    color: #0b5ed7;
+    border: 1px solid rgba(0, 123, 255, 0.4);
+}
+
+/* COMPLETED */
+.badge.completed {
+    background: rgba(25, 135, 84, 0.15);
+    color: #198754;
+    border: 1px solid rgba(25, 135, 84, 0.4);
+}
+
+/* CANCELLED */
+.badge.cancelled {
+    background: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+}
+
+/* REJECTED */
+.badge.rejected {
+    background: rgba(108, 117, 125, 0.2);
+    color: #6c757d;
+    border: 1px solid rgba(108, 117, 125, 0.4);
+}
+
+/* RESCHEDULE REQUESTED */
+.badge.reschedule-requested {
+    background: rgba(111, 66, 193, 0.15);
+    color: #6f42c1;
+    border: 1px solid rgba(111, 66, 193, 0.4);
+}
+
+/* RESCHEDULE REJECTED */
+.badge.reschedule-rejected {
+    background: rgba(102, 16, 242, 0.15);
+    color: #6610f2;
+    border: 1px solid rgba(102, 16, 242, 0.4);
+}
+/* =========================
+   PATIENT NOTIFICATION PANEL
+========================= */
+
+
+
+
+.notif-header h5 {
+    margin: 0;
+    color: #eaf2ff;
+    font-weight: 700;
+}
+
+
+
+.notif-close:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+}
+
+.notif-body {
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 0;
+}
+
+.notif-body::-webkit-scrollbar,
+.notif-modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notif-body::-webkit-scrollbar-thumb,
+.notif-modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.18);
+    border-radius: 999px;
+}
+
+
+
+/* =========================
+   ALL NOTIFICATIONS MODAL
+========================= */
+
+
+
+
+
+
+/* =========================================
+   PATIENT NOTIFICATIONS - CLEAN SYSTEM
+========================================= */
+
+.notif-wrapper {
+    position: relative;
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.notif-wrapper .dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.notif-wrapper i.bi-bell {
+    font-size: 28px;
+    color: black;
+}
+
+.notif-wrapper i.bi-bell:hover {
+    color: #4995e7;
+    transform: scale(1.08);
+    cursor: pointer;
+}
+
+.notif-wrapper i.bi-bell:active {
+    transform: scale(0.98);
+}
+
+/* Small panel */
+
+
+.notif-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+
+.notif-header h5 {
+    margin: 0;
+    color: #edf4ff;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.notif-close {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    color: #e6efff;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.notif-close:hover {
+    background: rgba(255,255,255,0.16);
+    color: #ffffff;
+}
+
+.notif-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 6px 0;
+}
+
+.notif-body::-webkit-scrollbar,
+.notif-modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notif-body::-webkit-scrollbar-thumb,
+.notif-modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.16);
+    border-radius: 999px;
+}
+
+.notif-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notif-list li {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.notif-list li:last-child {
+    border-bottom: none;
+}
+
+.notif-item-title {
+    display: block;
+    color: #f4f7ff;
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-bottom: 6px;
+}
+
+.notif-item-time {
+    display: block;
+    color: #98abd0;
+    font-size: 0.84rem;
+}
+
+.notif-empty {
+    padding: 18px 20px;
+    color: #9db0d1;
+}
+
+.notif-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    flex-shrink: 0;
+}
+
+.notif-footer-btn,
+.notif-see-all-btn,
+.notif-toolbar-btn,
+.notif-cancel-btn,
+.notif-confirm-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.notif-footer-btn,
+.notif-toolbar-btn,
+.notif-cancel-btn {
+    background: rgba(255,255,255,0.08);
+    color: #dfe9ff;
+}
+
+.notif-footer-btn:hover,
+.notif-toolbar-btn:hover,
+.notif-cancel-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+}
+
+
+
+.notif-see-all-btn:hover,
+.notif-confirm-btn:hover {
+    background: rgba(91,124,255,0.32);
+}
+
+.notif-toolbar-btn.danger {
+    background: rgba(239,68,68,0.14);
+    color: #ffd7d7;
+}
+
+.notif-toolbar-btn.danger:hover {
+    background: rgba(239,68,68,0.24);
+    color: #ffffff;
+}
+
+/* Big modal */
+.notif-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 10, 24, 0.62);
+    backdrop-filter: blur(5px);
+    z-index: 1400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s ease;
+    padding: 20px;
+}
+
+.notif-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.notif-modal-card {
+    width: min(920px, 96vw);
+    max-height: 84vh;
+    background: linear-gradient(180deg, #07142a 0%, #091833 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.34);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.notif-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.notif-modal-header h4 {
+    margin: 0;
+    color: #eef4ff;
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.notif-modal-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+}
+
+.notif-modal-body {
+    overflow-y: auto;
+    min-height: 0;
+    flex: 1;
+    padding: 8px 0;
+}
+
+.notif-list-full li {
+    padding: 18px 28px;
+}
+
+/* Warning modal */
+.notif-warning-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3,10,24,0.58);
+    backdrop-filter: blur(5px);
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.24s ease;
+    padding: 20px;
+}
+
+.notif-warning-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.notif-warning-card {
+    width: min(420px, 94vw);
+    background: #0b1830;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 24px 50px rgba(0,0,0,0.32);
+}
+
+.notif-warning-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: rgba(239,68,68,0.14);
+    color: #ff7b7b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 2rem;
+}
+
+.notif-warning-card h4 {
+    color: #f3f7ff;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.notif-warning-card p {
+    color: #a7b8d7;
+    margin-bottom: 22px;
+}
+
+.notif-warning-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+body.dark-mode .notif-panel,
+body.dark-mode .notif-modal-card,
+body.dark-mode .notif-warning-card {
+    background: linear-gradient(180deg, #07142a 0%, #091833 100%);
+    border-color: rgba(255,255,255,0.08);
+}
+
+
+body.dark-mode .record-search-input::placeholder {
+    color: rgba(255,255,255,0.65);
+}
+/* FILTER BAR */
+.record-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.record-search-input {
+    width: 100%;
+    min-width: 0;
+}
+
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+}
+.custom-dropdown .dropdown-selected {
+    width: 100%;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+@media (max-width: 768px) {
+    .record-filters {
+        grid-template-columns: 1fr;
+    }
+}
+.record-status-filter {
+    min-height: 46px;
+    border-radius: 14px;
+    padding: 0 14px;
+    font-size: 14px;
+    transition: all 0.25s ease;
+}
+
+/* LIGHT MODE */
+body:not(.dark-mode) .record-search-input,
+body:not(.dark-mode) .record-status-filter {
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* DARK MODE */
+body.dark-mode .record-search-input,
+body.dark-mode .record-status-filter {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #ecf3ff !important;
+    border: 1px solid rgba(125, 162, 255, 0.18) !important;
+}
+
+/* PLACEHOLDER */
+body.dark-mode .record-search-input::placeholder {
+    color: rgba(236, 243, 255, 0.6);
+}
+
+/* DROPDOWN OPTIONS (IMPORTANT FIX) */
+body.dark-mode select,
+body.dark-mode select option {
+    background-color: #0f1b2d !important;
+    color: #ecf3ff !important;
+}
+
+/* FOCUS EFFECT */
+.record-search-input:focus,
+.record-status-filter:focus {
+    outline: none;
+}
+
+body.dark-mode .record-search-input:focus,
+body.dark-mode .record-status-filter:focus {
+    border-color: #5b7cff !important;
+    box-shadow: 0 0 0 3px rgba(91, 124, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+/* =========================
+   CUSTOM DROPDOWN (SAAS STYLE)
+   ========================= */
+
+.custom-dropdown {
+  position: relative;
+  min-width: 200px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dropdown-selected {
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #0f1c2e, #0b1626);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #dbeafe;
+  transition: all 0.25s ease;
+}
+
+.custom-dropdown.open .dropdown-selected {
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 2px rgba(79,140,255,0.25);
+}
+
+/* OPTIONS PANEL */
+.dropdown-options {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: #0b1626;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 999;
+}
+
+/* OPEN STATE */
+.custom-dropdown.open .dropdown-options {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* OPTION ITEMS */
+.dropdown-options div {
+  padding: 12px 16px;
+  color: #dbeafe;
+  transition: background 0.2s ease;
+}
+
+.dropdown-options div:hover {
+  background: rgba(79,140,255,0.15);
+}
+/* SIDEBAR SPACING FIX */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  padding-top: 18px;
+}
+
+.brand {
+  margin-bottom: 14px;
+}
+
+.menu-toggle {
+  margin-bottom: 18px !important;
+}
+
+.side-nav {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.nav-label:first-of-type {
+  margin-top: 0 !important;
+}
+.scroll-area {
+    padding: 12px 24px 24px 24px !important;
+    margin-top: 0 !important;
+}
+
+.main-content {
+    padding-top: 0 !important;
+}
+
+.view {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.section-title {
+    margin-top: 0 !important;
+}
+#my-appointments {
+    padding-top: 0 !important;
+    margin-top: -16px;
+}
+.btn-clear-outline {
+    background: transparent;
+    border: 1.5px solid #ff4d5a;
+    color: #ff4d5a;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.btn-clear-outline:hover {
+    background: rgba(255, 77, 90, 0.08);
+    border-color: #ff6b75;
+    color: #ff6b75;
+    transform: translateY(-1px);
+}
+
+.btn-clear-outline:active {
+    transform: scale(0.96);
+    background: rgba(255, 77, 90, 0.15);
+}
+/* =========================================
+   FINAL NOTIFICATION SYSTEM
+   PATIENT + DENTIST
+   LIGHT + DARK
+   PASTE AT VERY BOTTOM
+========================================= */
+
+/* ---------- BASE ---------- */
+.notif-panel,
+.notif-modal-card,
+.notif-warning-card {
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.28s ease;
+}
+
+.notif-panel {
+  position: fixed;
+  top: 78px;
+  right: 18px;
+  width: 340px;
+  max-width: calc(100vw - 24px);
+  max-height: 520px;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.notif-panel.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.notif-header,
+.notif-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notif-header {
+  padding: 18px 20px 14px;
+  flex-shrink: 0;
+}
+
+.notif-modal-header {
+  padding: 20px 28px 16px;
+}
+
+.notif-header h5,
+.notif-modal-header h4 {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.notif-header h5 {
+  font-size: 1.15rem;
+}
+
+.notif-modal-header h4 {
+  font-size: 1.45rem;
+}
+
+.notif-close {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.notif-body,
+.notif-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.notif-body {
+  padding: 6px 0;
+}
+
+.notif-modal-body {
+  padding: 8px 0;
+}
+
+.notif-body::-webkit-scrollbar,
+.notif-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notif-list,
+.notif-list-full {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notif-list li,
+.notif-list-full li {
+  transition: background 0.2s ease;
+}
+
+.notif-list li {
+  padding: 16px 20px;
+}
+
+.notif-list-full li {
+  padding: 18px 28px;
+}
+
+.notif-item-title {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.45;
+  margin-bottom: 6px;
+}
+
+.notif-item-time {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+
+.notif-footer,
+.notif-modal-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.notif-footer {
+  padding: 14px 18px;
+}
+
+.notif-modal-toolbar {
+  padding: 14px 24px;
+}
+
+.notif-see-all-btn,
+.notif-confirm-btn,
+.notif-toolbar-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.notif-see-all-btn:hover,
+.notif-confirm-btn:hover,
+.notif-toolbar-btn:hover {
+  transform: translateY(-1px);
+}
+
+.notif-toolbar-btn.danger {
+  border: none;
+}
+
+.notif-modal-overlay,
+.notif-warning-overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(5px);
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s ease;
+  padding: 20px;
+}
+
+.notif-warning-overlay {
+  z-index: 1500;
+}
+
+.notif-modal-overlay.active,
+.notif-warning-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.notif-modal-card {
+  width: min(920px, 96vw);
+  max-height: 84vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.notif-warning-card {
+  width: min(420px, 94vw);
+  padding: 24px;
+}
+
+.notif-warning-card h4 {
+  margin: 0 0 10px;
+  font-weight: 800;
+}
+
+.notif-warning-card p {
+  margin: 0 0 22px;
+  line-height: 1.55;
+}
+
+.notif-warning-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ---------- LIGHT MODE ---------- */
+body:not(.dark):not(.dark-mode) .notif-panel,
+body:not(.dark):not(.dark-mode) .notif-modal-card,
+body:not(.dark):not(.dark-mode) .notif-warning-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16);
+  color: #1e293b;
+}
+
+body:not(.dark):not(.dark-mode) .notif-header,
+body:not(.dark):not(.dark-mode) .notif-modal-header,
+body:not(.dark):not(.dark-mode) .notif-footer,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar {
+  background: transparent;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+body:not(.dark):not(.dark-mode) .notif-header,
+body:not(.dark):not(.dark-mode) .notif-modal-header {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+body:not(.dark):not(.dark-mode) .notif-footer,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+body:not(.dark):not(.dark-mode) .notif-header h5,
+body:not(.dark):not(.dark-mode) .notif-modal-header h4,
+body:not(.dark):not(.dark-mode) .notif-item-title,
+body:not(.dark):not(.dark-mode) .notif-warning-card h4 {
+  color: #0f172a !important;
+}
+
+body:not(.dark):not(.dark-mode) .notif-item-time,
+body:not(.dark):not(.dark-mode) .notif-warning-card p {
+  color: #64748b !important;
+}
+
+body:not(.dark):not(.dark-mode) .notif-list li,
+body:not(.dark):not(.dark-mode) .notif-list-full li {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+body:not(.dark):not(.dark-mode) .notif-list li:hover,
+body:not(.dark):not(.dark-mode) .notif-list-full li:hover {
+  background: rgba(37, 99, 235, 0.04);
+}
+
+body:not(.dark):not(.dark-mode) .notif-close {
+  background: rgba(15, 23, 42, 0.06);
+  color: #1e293b;
+}
+
+body:not(.dark):not(.dark-mode) .notif-close:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+}
+
+body:not(.dark):not(.dark-mode) .notif-see-all-btn,
+body:not(.dark):not(.dark-mode) .notif-confirm-btn,
+body:not(.dark):not(.dark-mode) .notif-toolbar-btn {
+  background: rgba(37, 99, 235, 0.10);
+  color: #1d4ed8;
+}
+
+body:not(.dark):not(.dark-mode) .notif-see-all-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-confirm-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-toolbar-btn:hover {
+  background: rgba(37, 99, 235, 0.16);
+}
+
+body:not(.dark):not(.dark-mode) .notif-toolbar-btn.danger {
+  background: rgba(239, 68, 68, 0.10);
+  color: #dc2626;
+}
+
+body:not(.dark):not(.dark-mode) .notif-toolbar-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.16);
+}
+
+body:not(.dark):not(.dark-mode) .notif-body::-webkit-scrollbar-thumb,
+body:not(.dark):not(.dark-mode) .notif-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.16);
+}
+
+body:not(.dark):not(.dark-mode) .notif-modal-overlay,
+body:not(.dark):not(.dark-mode) .notif-warning-overlay {
+  background: rgba(15, 23, 42, 0.30);
+}
+
+/* ---------- DARK MODE ---------- */
+body.dark .notif-panel,
+body.dark .notif-modal-card,
+body.dark .notif-warning-card,
+body.dark-mode .notif-panel,
+body.dark-mode .notif-modal-card,
+body.dark-mode .notif-warning-card {
+  background: linear-gradient(180deg, #07142a 0%, #091833 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+  color: #eaf2ff;
+}
+
+body.dark .notif-header,
+body.dark .notif-modal-header,
+body.dark .notif-footer,
+body.dark .notif-modal-toolbar,
+body.dark-mode .notif-header,
+body.dark-mode .notif-modal-header,
+body.dark-mode .notif-footer,
+body.dark-mode .notif-modal-toolbar {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .notif-header,
+body.dark .notif-modal-header,
+body.dark-mode .notif-header,
+body.dark-mode .notif-modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .notif-footer,
+body.dark .notif-modal-toolbar,
+body.dark-mode .notif-footer,
+body.dark-mode .notif-modal-toolbar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .notif-header h5,
+body.dark .notif-modal-header h4,
+body.dark .notif-item-title,
+body.dark .notif-warning-card h4,
+body.dark-mode .notif-header h5,
+body.dark-mode .notif-modal-header h4,
+body.dark-mode .notif-item-title,
+body.dark-mode .notif-warning-card h4 {
+  color: #f3f7ff !important;
+}
+
+body.dark .notif-item-time,
+body.dark .notif-warning-card p,
+body.dark-mode .notif-item-time,
+body.dark-mode .notif-warning-card p {
+  color: #98abd0 !important;
+}
+
+body.dark .notif-list li,
+body.dark .notif-list-full li,
+body.dark-mode .notif-list li,
+body.dark-mode .notif-list-full li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body.dark .notif-list li:hover,
+body.dark .notif-list-full li:hover,
+body.dark-mode .notif-list li:hover,
+body.dark-mode .notif-list-full li:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+body.dark .notif-close,
+body.dark-mode .notif-close {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e6efff;
+}
+
+body.dark .notif-close:hover,
+body.dark-mode .notif-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+body.dark .notif-see-all-btn,
+body.dark .notif-confirm-btn,
+body.dark .notif-toolbar-btn,
+body.dark-mode .notif-see-all-btn,
+body.dark-mode .notif-confirm-btn,
+body.dark-mode .notif-toolbar-btn {
+  background: rgba(91, 124, 255, 0.22);
+  color: #ffffff;
+}
+
+body.dark .notif-see-all-btn:hover,
+body.dark .notif-confirm-btn:hover,
+body.dark .notif-toolbar-btn:hover,
+body.dark-mode .notif-see-all-btn:hover,
+body.dark-mode .notif-confirm-btn:hover,
+body.dark-mode .notif-toolbar-btn:hover {
+  background: rgba(91, 124, 255, 0.32);
+}
+
+body.dark .notif-toolbar-btn.danger,
+body.dark-mode .notif-toolbar-btn.danger {
+  background: rgba(239, 68, 68, 0.14);
+  color: #ffd7d7;
+}
+
+body.dark .notif-toolbar-btn.danger:hover,
+body.dark-mode .notif-toolbar-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.24);
+  color: #ffffff;
+}
+
+body.dark .notif-body::-webkit-scrollbar-thumb,
+body.dark .notif-modal-body::-webkit-scrollbar-thumb,
+body.dark-mode .notif-body::-webkit-scrollbar-thumb,
+body.dark-mode .notif-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+body.dark .notif-modal-overlay,
+body.dark .notif-warning-overlay,
+body.dark-mode .notif-modal-overlay,
+body.dark-mode .notif-warning-overlay {
+  background: rgba(3, 10, 24, 0.62);
+}
+
+/* =========================================
+   FINAL NOTIFICATION BUTTON FIX
+   FORCE LIGHT/DARK TEXT VISIBILITY
+========================================= */
+
+/* LIGHT MODE */
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-toolbar-btn,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-see-all-btn,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-confirm-btn,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-toolbar-btn,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-see-all-btn,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-confirm-btn {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+  border: 1px solid rgba(37, 99, 235, 0.18) !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* force text inside button too */
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-toolbar-btn *,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-see-all-btn *,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-confirm-btn *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-toolbar-btn *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-see-all-btn *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-confirm-btn * {
+  color: #1d4ed8 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-toolbar-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-see-all-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-confirm-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-toolbar-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-see-all-btn:hover,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-confirm-btn:hover {
+  background: #bfdbfe !important;
+  color: #1e40af !important;
+}
+
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-toolbar-btn:hover *,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-see-all-btn:hover *,
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-confirm-btn:hover *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-toolbar-btn:hover *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-see-all-btn:hover *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-confirm-btn:hover * {
+  color: #1e40af !important;
+}
+
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-toolbar-btn.danger,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-toolbar-btn.danger {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1px solid rgba(239, 68, 68, 0.18) !important;
+}
+
+body:not(.dark):not(.dark-mode) .notif-modal-toolbar .notif-toolbar-btn.danger *,
+body:not(.dark):not(.dark-mode) .notif-footer .notif-toolbar-btn.danger * {
+  color: #b91c1c !important;
+}
+
+/* DARK MODE */
+body.dark .notif-modal-toolbar .notif-toolbar-btn,
+body.dark .notif-modal-toolbar .notif-see-all-btn,
+body.dark .notif-modal-toolbar .notif-confirm-btn,
+body.dark .notif-footer .notif-toolbar-btn,
+body.dark .notif-footer .notif-see-all-btn,
+body.dark .notif-footer .notif-confirm-btn,
+body.dark-mode .notif-modal-toolbar .notif-toolbar-btn,
+body.dark-mode .notif-modal-toolbar .notif-see-all-btn,
+body.dark-mode .notif-modal-toolbar .notif-confirm-btn,
+body.dark-mode .notif-footer .notif-toolbar-btn,
+body.dark-mode .notif-footer .notif-see-all-btn,
+body.dark-mode .notif-footer .notif-confirm-btn {
+  background: rgba(91, 124, 255, 0.22) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  opacity: 1 !important;
+}
+
+body.dark .notif-modal-toolbar .notif-toolbar-btn *,
+body.dark .notif-modal-toolbar .notif-see-all-btn *,
+body.dark .notif-modal-toolbar .notif-confirm-btn *,
+body.dark .notif-footer .notif-toolbar-btn *,
+body.dark .notif-footer .notif-see-all-btn *,
+body.dark .notif-footer .notif-confirm-btn *,
+body.dark-mode .notif-modal-toolbar .notif-toolbar-btn *,
+body.dark-mode .notif-modal-toolbar .notif-see-all-btn *,
+body.dark-mode .notif-modal-toolbar .notif-confirm-btn *,
+body.dark-mode .notif-footer .notif-toolbar-btn *,
+body.dark-mode .notif-footer .notif-see-all-btn *,
+body.dark-mode .notif-footer .notif-confirm-btn * {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+/* =========================================
+   FIX: MARK ALL AS READ BUTTON (PATIENT)
+========================================= */
+
+/* LIGHT MODE */
+body:not(.dark):not(.dark-mode) .notif-footer-btn {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+  -webkit-text-fill-color: #1d4ed8 !important;
+  border: 1px solid rgba(37, 99, 235, 0.2) !important;
+  opacity: 1 !important;
+  font-weight: 700;
+}
+
+body:not(.dark):not(.dark-mode) .notif-footer-btn:hover {
+  background: #bfdbfe !important;
+  color: #1e40af !important;
+}
+
+/* VERY IMPORTANT: disabled state fix */
+body:not(.dark):not(.dark-mode) .notif-footer-btn:disabled {
+  color: #1d4ed8 !important;
+  -webkit-text-fill-color: #1d4ed8 !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+}
+
+/* DARK MODE */
+body.dark .notif-footer-btn,
+body.dark-mode .notif-footer-btn {
+  background: rgba(91, 124, 255, 0.22) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+body.dark .notif-footer-btn:hover,
+body.dark-mode .notif-footer-btn:hover {
+  background: rgba(91, 124, 255, 0.32) !important;
+}
+/* =========================================
+   PATIENT FILTER DROPDOWN LIGHT/DARK FIX
+========================================= */
+
+/* LIGHT MODE */
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-selected {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+body:not(.dark):not(.dark-mode) .custom-dropdown.open .dropdown-selected {
+  border-color: #4f8cff !important;
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.14) !important;
+}
+
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-options {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.10) !important;
+}
+
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-options div {
+  color: #1e293b !important;
+}
+
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-options div:hover {
+  background: rgba(79, 140, 255, 0.10) !important;
+  color: #0f172a !important;
+}
+
+/* optional arrow/icon inside selected */
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-selected i,
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-selected span,
+body:not(.dark):not(.dark-mode) .custom-dropdown .dropdown-selected * {
+  color: #1e293b !important;
+}
+
+/* DARK MODE */
+body.dark-mode .custom-dropdown .dropdown-selected,
+body.dark .custom-dropdown .dropdown-selected {
+  background: linear-gradient(145deg, #0f1c2e, #0b1626) !important;
+  color: #dbeafe !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+body.dark-mode .custom-dropdown .dropdown-options,
+body.dark .custom-dropdown .dropdown-options {
+  background: #0b1626 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+body.dark-mode .custom-dropdown .dropdown-options div,
+body.dark .custom-dropdown .dropdown-options div {
+  color: #dbeafe !important;
+}
+
+body.dark-mode .custom-dropdown .dropdown-options div:hover,
+body.dark .custom-dropdown .dropdown-options div:hover {
+  background: rgba(79,140,255,0.15) !important;
+}
+body:not(.dark-mode) .btn-glass.see-all-btn {
+    background: #4e73df !important;
+    color: #fff !important;
+    border: none;
+}
+.invoice-modal-card {
+  width: min(560px, 92vw);
+  max-width: 560px;
+}
+
+.invoice-details-card {
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  padding: 20px 22px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.invoice-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  font-size: 0.98rem;
+}
+
+.invoice-row:last-child {
+  border-bottom: none;
+}
+
+.invoice-row strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.invoice-row span {
+  color: #334155;
+  text-align: right;
+}
+
+body.dark-mode .invoice-details-card {
+  background: #0f172a;
+  border-color: #1f2a44;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+body.dark-mode .invoice-row {
+  border-bottom-color: rgba(148, 163, 184, 0.14);
+}
+
+body.dark-mode .invoice-row strong {
+  color: #e6f0ff;
+}
+
+body.dark-mode .invoice-row span {
+  color: #cbd5e1;
+}
+.btn-billing-cancel {
+    border: 1px solid rgba(78,115,223,0.22);
+    background: #eef4ff;
+    color: #2f5fe3;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 0.9rem;
+    transition: 0.25s ease;
+}
+
+.btn-billing-cancel:hover {
+    background: #dbeafe;
+    color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.btn-billing-cancel:active {
+    transform: translateY(0);
+}
+
+body.dark-mode .btn-billing-cancel {
+    background: rgba(59,130,246,0.12);
+    color: #bfdbfe;
+    border: 1px solid rgba(96,165,250,0.22);
+}
+
+body.dark-mode .btn-billing-cancel:hover {
+    background: rgba(59,130,246,0.2);
+    color: #ffffff;
+}
+.patient-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.patient-row-actions-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+
+.patient-action-btn {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: 0.25s ease;
+  cursor: pointer;
+  background: #fff;
+}
+
+.patient-action-btn.primary {
+  background: linear-gradient(90deg, #4f46e5, #2563eb);
+  color: #fff;
+  border: none;
+}
+
+.patient-action-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+}
+
+.patient-action-btn.danger {
+  background: #fff;
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+.patient-action-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.patient-action-btn.ghost {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.2);
+  background: #f8fbff;
+}
+
+.patient-action-btn.ghost:hover {
+  background: #eef5ff;
+  transform: translateY(-1px);
+}
+
+/* IMPORTANT: let the table row/action cell show floating dropdowns properly */
+#myAppointmentsTableBody td,
+#myAppointmentsTableBody tr,
+.settings-card,
+.table-responsive {
+  overflow: visible !important;
+}
+
+.patient-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: nowrap !important;
+  position: relative;
+  min-width: 0;
+}
+
+.patient-row-actions-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap !important;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.patient-action-menu-wrap {
+  position: relative;
+  flex: 0 0 auto;
+  margin-left: 2px;
+  z-index: 2;
+}
+
+.patient-action-menu-wrap.open {
+  z-index: 10001;
+}
+
+
+.patient-action-btn {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: 0.25s ease;
+  cursor: pointer;
+  background: #fff;
+    white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.patient-action-btn.primary {
+  background: linear-gradient(90deg, #4f46e5, #2563eb);
+  color: #fff;
+  border: none;
+}
+
+.patient-action-btn.danger {
+  background: #fff;
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+.patient-action-btn.ghost {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.2);
+  background: #f8fbff;
+    white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.patient-action-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  padding: 8px;
+  display: none;
+  z-index: 10002;
+  pointer-events: auto;
+}
+
+.patient-action-dropdown.show {
+  display: block;
+  animation: fadeDropdownIn 0.18s ease;
+}
+
+.patient-dropdown-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 11px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  transition: 0.2s ease;
+}
+
+.patient-dropdown-item:hover {
+  background: #f4f8ff;
+  color: #2563eb;
+}
+
+.patient-dropdown-item.danger {
+  color: #dc2626;
+}
+
+.patient-dropdown-item.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+}
+
+@keyframes fadeDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body.dark-mode .patient-action-btn {
+  background: #0f172a;
+  color: #e6f0ff;
+  border-color: #22304d;
+}
+
+body.dark-mode .patient-action-btn.ghost {
+  background: #111c33;
+  color: #93c5fd;
+}
+
+body.dark-mode .patient-action-btn.danger {
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.38);
+}
+
+body.dark-mode .patient-action-dropdown {
+  background: #0f172a;
+  border: 1px solid #22304d;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .patient-dropdown-item {
+  color: #e6f0ff;
+}
+
+body.dark-mode .patient-dropdown-item:hover {
+  background: #16233d;
+  color: #93c5fd;
+}
+
+.patient-action-dropdown.show {
+  display: block;
+  animation: fadeDropdownIn 0.18s ease;
+}
+
+.patient-dropdown-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 11px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  transition: 0.2s ease;
+}
+
+.patient-dropdown-item:hover {
+  background: #f4f8ff;
+  color: #2563eb;
+}
+
+.patient-dropdown-item.danger {
+  color: #dc2626;
+}
+
+.patient-dropdown-item.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+}
+
+@keyframes fadeDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body.dark-mode .patient-action-btn {
+  background: #0f172a;
+  color: #e6f0ff;
+  border-color: #22304d;
+}
+
+body.dark-mode .patient-action-btn.ghost {
+  background: #111c33;
+  color: #93c5fd;
+}
+
+body.dark-mode .patient-action-btn.danger {
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.38);
+}
+
+body.dark-mode .patient-action-dropdown {
+  background: #0f172a;
+  border: 1px solid #22304d;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .patient-dropdown-item {
+  color: #e6f0ff;
+}
+
+body.dark-mode .patient-dropdown-item:hover {
+  background: #16233d;
+  color: #93c5fd;
+}
+
+body.dark-mode .patient-dropdown-item.danger {
+  color: #fca5a5;
+}
+
+body.dark-mode .patient-dropdown-item.danger:hover {
+  background: rgba(239, 68, 68, 0.12);
+}
+.table-modern,
+.table-modern .table,
+.table-modern .table tbody,
+.table-modern .table tr,
+.table-modern .table td {
+  overflow: visible !important;
+}
+
+/* ===== FINAL PATIENT ACTION DROPDOWN FIX ===== */
+
+.patient-action-backdrop {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 9998;
+  display: none;
+}
+
+.patient-action-backdrop.show {
+  display: block;
+}
+
+.patient-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.patient-row-actions-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.patient-action-menu-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.patient-action-menu-wrap.open {
+  z-index: 10001;
+}
+
+.patient-action-btn {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: 0.25s ease;
+  cursor: pointer;
+  background: #fff;
+}
+
+.patient-action-btn.primary {
+  background: linear-gradient(90deg, #4f46e5, #2563eb);
+  color: #fff;
+  border: none;
+}
+
+.patient-action-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+}
+
+.patient-action-btn.danger {
+  background: #fff;
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+.patient-action-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.patient-action-btn.ghost {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.2);
+  background: #f8fbff;
+}
+
+.patient-action-btn.ghost:hover {
+  background: #eef5ff;
+  transform: translateY(-1px);
+}
+
+.patient-action-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  padding: 8px;
+  display: none;
+  z-index: 10002;
+}
+
+.patient-action-dropdown.show {
+  display: block;
+  animation: fadeDropdownIn 0.18s ease;
+}
+
+.patient-dropdown-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 11px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  transition: 0.2s ease;
+}
+
+.patient-dropdown-item:hover {
+  background: #f4f8ff;
+  color: #2563eb;
+}
+
+.patient-dropdown-item.danger {
+  color: #dc2626;
+}
+
+.patient-dropdown-item.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+}
+
+@keyframes fadeDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* stop the other dots from reacting while menu is open */
+body.patient-menu-open .more-toggle:not(.menu-owner) {
+  pointer-events: none !important;
+  opacity: 0.45;
+}
+
+/* stop row hover movement while menu is open */
+body.patient-menu-open .table tbody tr:hover {
+  transform: none !important;
+}
+
+/* keep containers visible */
+.settings-card,
+.table,
+.table tbody,
+.table tr,
+.table td,
+#myAppointmentsTableBody,
+#myAppointmentsTableBody tr,
+#myAppointmentsTableBody td {
+  overflow: visible !important;
+}
+
+/* dark mode */
+body.dark-mode .patient-action-dropdown {
+  background: #0f172a;
+  border: 1px solid #22304d;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .patient-dropdown-item {
+  color: #e6f0ff;
+}
+
+body.dark-mode .patient-dropdown-item:hover {
+  background: #16233d;
+  color: #93c5fd;
+}
+body.patient-menu-open .table tbody tr:hover {
+  transform: none !important;
+}
+
+body.patient-menu-open .table tbody tr {
+  transition: none !important;
+}
+.chatbot-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 9999;
+  background: linear-gradient(135deg, #2f6bff, #6ea8ff);
+  color: #fff;
+  font-size: 1.4rem;
+  box-shadow: 0 18px 40px rgba(47, 107, 255, 0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.chatbot-fab:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 24px 50px rgba(47, 107, 255, 0.35);
+}
+
+.chatbot-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 98px;
+  width: 380px;
+  max-width: calc(100vw - 24px);
+  height: 560px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 60px rgba(18, 38, 63, 0.18);
+  overflow: hidden;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.chatbot-panel.active {
+  display: flex;
+}
+
+.chatbot-header {
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #2f6bff, #6ea8ff);
+  color: #fff;
+}
+
+.chatbot-header button {
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.chatbot-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bot-msg,
+.user-msg {
+  max-width: 85%;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.bot-msg {
+  align-self: flex-start;
+  background: #eef4ff;
+  color: #15315f;
+
+  max-width: 85%;
+  padding: 14px 16px;
+
+  border-radius: 16px;
+
+  font-size: 0.95rem;
+  line-height: 1.6; /* 🔥 fixes cramped text */
+  letter-spacing: 0.2px; /* smoother readability */
+
+  white-space: normal; /* prevent weird wrapping */
+  word-break: break-word; /* prevent overflow */
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08); /* optional nice touch */
+}
+.user-msg {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #2f6bff, #4f8dff);
+  color: #fff;
+}
+
+.chatbot-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 12px;
+}
+
+.chat-chip {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #f2f6ff;
+  color: #2450b8;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.chatbot-footer {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px 16px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.chatbot-footer input {
+  flex: 1;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.chatbot-footer button {
+  border: 0;
+  border-radius: 14px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #2f6bff, #6ea8ff);
+  color: #fff;
+  font-weight: 600;
+}
+
+body.dark-mode .chatbot-panel {
+  background: rgba(15, 22, 40, 0.95);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark-mode .bot-msg {
+  background: rgba(255,255,255,0.08);
+  color: #eef4ff;
+
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+body.dark-mode .chat-chip {
+  background: rgba(255,255,255,0.08);
+  color: #cfe0ff;
+}
+
+body.dark-mode .chatbot-footer {
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark-mode .chatbot-footer input {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+}
